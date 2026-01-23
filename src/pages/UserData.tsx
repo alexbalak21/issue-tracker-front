@@ -130,7 +130,7 @@ export default function UserData() {
                   </label>
                   <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md sm:text-sm">
                     <div className="flex flex-wrap gap-2">
-                      {displayUser.roles.map((role, index) => (
+                      {displayUser.roles.map((role: string, index: number) => (
                         <span
                           key={index}
                           className="px-2 py-1 text-xs font-medium text-indigo-600 bg-indigo-100 rounded-full"
