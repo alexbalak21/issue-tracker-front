@@ -1,10 +1,43 @@
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 export default function UserData() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading: authLoading, accessToken } = useAuth();
+  const [fetchedUser, setFetchedUser] = useState<any>(null);
+  const [isFetching, setIsFetching] = useState(false);
+  const [fetchError, setFetchError] = useState<string | null>(null);
 
-  if (isLoading) {
+  useEffect(() => {
+    if (isAuthenticated && accessToken) {
+      console.log('🔍 UserData page mounted - fetching fresh user data from /api/user');
+      setIsFetching(true);
+      setFetchError(null);
+
+      axios.get('/api/user', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then(response => {
+          console.log('✅ Fresh user data received:', response.data);
+          setFetchedUser(response.data);
+        })
+        .catch(error => {
+          console.error('❌ Error fetching user data:', error?.response?.data ?? error);
+          setFetchError(error?.response?.data?.message || 'Failed to fetch user data');
+        })
+        .finally(() => {
+          setIsFetching(false);
+        });
+    }
+  }, [isAuthenticated, accessToken]);
+
+  const displayUser = fetchedUser || user;
+
+  if (authLoading || isFetching) {
     return (
       <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50">
         <div className="flex flex-col justify-center w-full px-6 sm:px-6 lg:px-8">
@@ -18,7 +51,7 @@ export default function UserData() {
     );
   }
 
-  if (!isAuthenticated || !user) {
+  if (!isAuthenticated || !displayUser) {
     return (
       <div className="h-[calc(100vh-4rem)] flex items-center justify-center bg-gray-50">
         <div className="flex flex-col justify-center w-full px-6 sm:px-6 lg:px-8">
@@ -52,6 +85,12 @@ export default function UserData() {
           </h2>
 
           <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
+            {fetchError && (
+              <div className="mb-4 bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                <p className="text-sm text-yellow-700">{fetchError}</p>
+              </div>
+            )}
+
             <div className="space-y-6">
               {/* ID */}
               <div>
@@ -59,7 +98,7 @@ export default function UserData() {
                   ID
                 </label>
                 <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md text-gray-900 sm:text-sm">
-                  {user.id}
+                  {displayUser.id}
                 </div>
               </div>
 
@@ -69,7 +108,7 @@ export default function UserData() {
                   Name
                 </label>
                 <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md text-gray-900 sm:text-sm">
-                  {user.name}
+                  {displayUser.name}
                 </div>
               </div>
 
@@ -79,19 +118,19 @@ export default function UserData() {
                   Email
                 </label>
                 <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md text-gray-900 sm:text-sm">
-                  {user.email}
+                  {displayUser.email}
                 </div>
               </div>
 
               {/* Roles */}
-              {user.roles && user.roles.length > 0 && (
+              {displayUser.roles && displayUser.roles.length > 0 && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Roles
                   </label>
                   <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md sm:text-sm">
                     <div className="flex flex-wrap gap-2">
-                      {user.roles.map((role, index) => (
+                      {displayUser.roles.map((role, index) => (
                         <span
                           key={index}
                           className="px-2 py-1 text-xs font-medium text-indigo-600 bg-indigo-100 rounded-full"
@@ -105,25 +144,25 @@ export default function UserData() {
               )}
 
               {/* Created At */}
-              {user.createdAt && (
+              {displayUser.createdAt && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Created At
                   </label>
                   <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md text-gray-900 sm:text-sm">
-                    {new Date(user.createdAt).toLocaleString()}
+                    {new Date(displayUser.createdAt).toLocaleString()}
                   </div>
                 </div>
               )}
 
               {/* Updated At */}
-              {user.updatedAt && (
+              {displayUser.updatedAt && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Updated At
                   </label>
                   <div className="appearance-none block w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md text-gray-900 sm:text-sm">
-                    {new Date(user.updatedAt).toLocaleString()}
+                    {new Date(displayUser.updatedAt).toLocaleString()}
                   </div>
                 </div>
               )}

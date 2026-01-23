@@ -3,7 +3,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, CodeBracketIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, CodeBracketIcon, UserIcon } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
 
 function classNames(...classes: Array<string | false | null | undefined>): string {
