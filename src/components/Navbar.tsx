@@ -17,6 +17,7 @@ export default function Navbar() {
     { name: "Home", href: "/", icon: HomeIcon },
     { name: "About", href: "/about", icon: InformationCircleIcon },
     { name: "API Demo", href: "/demo", icon: CodeBracketIcon },
+    { name: "User", href: "/user", icon: UserIcon },
     { name: "Login", href: "/login", icon: HomeIcon },
   ];
 
