@@ -1,19 +1,49 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 
 export default function LoginForm() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const { login, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!email.trim() || !password) {
+      setError('Please enter both email and password');
+      return;
+    }
+
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.message || err?.message || 'Login failed. Please try again.';
+      setError(errorMessage);
+    }
+  };
 
   return (
-    <div className="h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-4xl font-extrabold mb-6 text-gray-900">
+    <div className="flex flex-col justify-center w-full px-6 sm:px-6 lg:px-8">
+      <div className="w-105 mx-auto">
+        <h2 className="text-center text-3xl font-extrabold mb-8 text-gray-900">
           Sign in to your account
         </h2>
-      </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6">
+          {error && (
+            <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
+              <p className="text-sm text-red-700">{error}</p>
+            </div>
+          )}
+
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <Input
               id="email"
               name="email"
@@ -21,6 +51,9 @@ export default function LoginForm() {
               autoComplete="email"
               label="Email address"
               placeholder="your@mail.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
             />
 
             <Input
@@ -30,6 +63,9 @@ export default function LoginForm() {
               autoComplete="current-password"
               label="Password"
               placeholder="••••••••"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
             />
 
             <div className="flex items-center justify-between">
@@ -61,8 +97,9 @@ export default function LoginForm() {
             <Button
               type="submit"
               fullWidth
+              disabled={isLoading}
             >
-              Sign in
+              {isLoading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
         </div>
