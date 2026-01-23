@@ -2,10 +2,13 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import axios from 'axios';
 
 interface User {
-  id: string;
+  id: string | number;
   name: string;
   email: string;
-  role: string;
+  role?: string;
+  roles?: string[];
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface AuthContextType {
@@ -87,6 +90,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
 
       console.log('🎉 Login successful!');
+
+      // Set axios default header for subsequent requests
+      axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+
+      // Fetch user details from /api/user
+      console.log('📋 Fetching user details from /api/user');
+      const userResponse = await axios.get('/api/user', {
+        headers: {
+          'Authorization': `Bearer ${newAccessToken}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      console.log('✅ User details received:', userResponse.data);
+
+      const completeUserData: User = userResponse.data;
+
+      // Update user in state and storage with complete data
+      setUser(completeUserData);
+      sessionStorage.setItem('user', JSON.stringify(completeUserData));
+
+      console.log('💾 Complete user data stored');
+      console.log('🎉 Authentication complete!');
     } catch (error: any) {
       // Log server response body to help debug failures
       console.error('❌ Login error response:', error?.response?.data ?? error);

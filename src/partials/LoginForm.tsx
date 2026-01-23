@@ -5,8 +5,8 @@ import Input from "../components/shared/Input";
 import Button from "../components/shared/Button";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('testuser@example.com');
+  const [password, setPassword] = useState('password123');
   const [error, setError] = useState<string | null>(null);
   const { login, isLoading } = useAuth();
   const navigate = useNavigate();
