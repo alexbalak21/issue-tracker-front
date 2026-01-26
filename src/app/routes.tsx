@@ -10,6 +10,8 @@ import UpdateUserPassword from "../pages/User/UpdateUserPassword";
 import { UserLayout } from "../components";
 import { UserIcon, PencilSquareIcon, KeyIcon } from "@heroicons/react/24/outline";
 
+import EditorPage from "../pages/EditorPage";
+
 const userLinks = [
   { name: "Profile", href: "/profile", icon: UserIcon },
   { name: "Edit Profile", href: "/update-profile", icon: PencilSquareIcon },
@@ -23,6 +25,7 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/demo" element={<ApiDemo />} />
+      <Route path="/editor" element={<EditorPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

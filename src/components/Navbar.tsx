@@ -1,5 +1,5 @@
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/react"
-import {Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, CodeBracketIcon} from "@heroicons/react/24/outline"
+import {Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, CodeBracketIcon, PencilSquareIcon} from "@heroicons/react/24/outline"
 import {Link, useLocation} from "react-router-dom"
 import UserMenu from "./UserMenu"
 
@@ -18,6 +18,7 @@ export default function Navbar({user}: NavbarProps) {
     {name: "Home", href: "/", icon: HomeIcon},
     {name: "About", href: "/about", icon: InformationCircleIcon},
     {name: "API Demo", href: "/demo", icon: CodeBracketIcon},
+    {name: "Editor", href: "/editor", icon: PencilSquareIcon},
   ]
 
   const isActive = (path: string) => location.pathname === path
