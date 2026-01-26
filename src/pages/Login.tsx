@@ -41,12 +41,12 @@ export default function Login() {
     setIsLoading(true);
 
     try {
-      const data = await login({ email: formData.email, password: formData.password });
+      const response = await login({ email: formData.email, password: formData.password });
 
       // Store token and user
-      setAccessToken(data.access_token);
-      setRefreshToken(data.refresh_token ?? null);
-      setUser(data.user);
+      setAccessToken(response.data.access_token);
+      setRefreshToken(response.data.refresh_token ?? null);
+      setUser(response.data.user);
 
       toast.success("Login successful!");
       navigate("/");

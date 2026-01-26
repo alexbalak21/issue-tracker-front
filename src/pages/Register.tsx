@@ -19,9 +19,9 @@ export default function Register() {
   const { setUser } = useUser();
 
   const [formData, setFormData] = useState<RegisterFormData>({
-    name: "",
-    email: "",
-    password: "",
+    name: "John Doe",
+    email: "john.doe@example.com",
+    password: "password@1234",
   });
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,15 +43,15 @@ export default function Register() {
     setIsLoading(true);
 
     try {
-      const data = await register({
+      const response = await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
       });
 
-      setAccessToken(data.access_token);
-      setRefreshToken(data.refresh_token ?? null);
-      setUser(data.user);
+      setAccessToken(response.data.access_token);
+      setRefreshToken(response.data.refresh_token ?? null);
+      setUser(response.data.user);
 
       toast.success("Registration successful! Redirecting to profile...");
       navigate("/profile");

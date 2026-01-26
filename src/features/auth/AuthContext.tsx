@@ -110,8 +110,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       const data = await response.json();
-      const newToken = data.access_token;
-      const newRefreshToken = data.refresh_token ?? refreshToken;
+      const newToken = data.data.access_token;
+      const newRefreshToken = data.data.refresh_token ?? refreshToken;
 
       setAccessToken(newToken);
       setRefreshToken(newRefreshToken);
