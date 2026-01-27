@@ -1,7 +1,3 @@
-// shared/lib/apiClient.ts
-
-// Base URL configuration
-
 const BASE_URL = import.meta.env.VITE_API_URL;
 
 const buildUrl = (path: string): string => {
