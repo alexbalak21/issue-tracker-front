@@ -13,9 +13,14 @@ interface NavbarProps {
 import { useRole } from "../features/auth/useRole";
 
 export default function Navbar({user}: NavbarProps) {
-  const location = useLocation()
+  const location = useLocation();
 
   const { isUser, isAgent, isAdmin, isVisitor } = useRole();
+
+  console.log("[Navbar] isUser:", isUser);
+  console.log("[Navbar] isAgent:", isAgent);
+  console.log("[Navbar] isAdmin:", isAdmin);
+  console.log("[Navbar] isVisitor:", isVisitor);
 
   const navLinks = [
     { name: "Home", href: "/", show: true },
@@ -30,7 +35,10 @@ export default function Navbar({user}: NavbarProps) {
     { name: "Admin Settings", href: "/admin/settings", show: isAdmin },
   ];
 
-  const isActive = (path: string) => location.pathname === path
+  console.log("[Navbar] navLinks:", navLinks);
+  console.log("[Navbar] navLinks to render:", navLinks.filter(l => l.show));
+
+  const isActive = (path: string) => location.pathname === path;
 
   return (
     <Disclosure

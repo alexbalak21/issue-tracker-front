@@ -169,17 +169,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   );
 
   const value = useMemo(
-    () => ({
-      accessToken,
-      refreshToken,
-      setAccessToken,
-      setRefreshToken,
-      clearAccessToken,
-      clearRefreshToken,
-      authenticated: !!accessToken,
-      refreshAccessToken,
-      apiClient
-    }),
+    () => {
+      console.log("[AuthContext] value:", {
+        accessToken,
+        refreshToken,
+        authenticated: !!accessToken
+      });
+      return {
+        accessToken,
+        refreshToken,
+        setAccessToken,
+        setRefreshToken,
+        clearAccessToken,
+        clearRefreshToken,
+        authenticated: !!accessToken,
+        refreshAccessToken,
+        apiClient
+      };
+    },
     [accessToken, refreshToken, refreshAccessToken, apiClient, clearAccessToken, clearRefreshToken]
   );
 

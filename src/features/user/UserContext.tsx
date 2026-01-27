@@ -20,11 +20,14 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
  * Converts `role` (string) to `roles` (array) if needed.
  */
 function normalizeUserData(data: RawUser): UserInfo {
+  const roles = Array.isArray(data.roles) ? data.roles : (data.role ? [data.role] : []);
+  console.log("[UserContext] normalizeUserData input:", data);
+  console.log("[UserContext] normalizeUserData output roles:", roles);
   return {
     id: data.id,
     name: data.name,
     email: data.email,
-    roles: Array.isArray(data.roles) ? data.roles : (data.role ? [data.role] : []),
+    roles,
     createdAt: data.createdAt,
     updatedAt: data.updatedAt,
     profileImage: data.profileImage ?? null,
@@ -52,14 +55,17 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
     const fetchUser = async () => {
       try {
         const response = await apiClient("/api/user");
+        console.log("[UserContext] /api/user response:", response);
 
         if (response.ok) {
           const userData = await response.json();
+          console.log("[UserContext] /api/user userData:", userData);
           setUser(normalizeUserData(userData));
         } else {
           setUser(null);
         }
-      } catch {
+      } catch (err) {
+        console.log("[UserContext] fetchUser error:", err);
         setUser(null);
       }
     };
