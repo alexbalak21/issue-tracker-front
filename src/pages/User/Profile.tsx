@@ -131,9 +131,7 @@ export default function Profile() {
             {user.roles.length > 1 ? (
               <Select
                 options={user.roles}
-                // @ts-ignore
                 value={activeRole || user.roles[0]}
-                // @ts-ignore
                 onChange={setActiveRole}
               />
             ) : (
