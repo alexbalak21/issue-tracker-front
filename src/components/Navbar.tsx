@@ -1,5 +1,5 @@
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/react"
-import {Bars3Icon, XMarkIcon, HomeIcon, InformationCircleIcon, CodeBracketIcon, PencilSquareIcon} from "@heroicons/react/24/outline"
+import {Bars3Icon, XMarkIcon} from "@heroicons/react/24/outline"
 import {Link, useLocation} from "react-router-dom"
 import UserMenu from "./UserMenu"
 
@@ -26,7 +26,7 @@ export default function Navbar({user}: NavbarProps) {
     { name: "Home", href: "/", show: true },
     { name: "About", href: "/about", show: isVisitor },
     { name: "API Demo", href: "/demo", show: isUser || isAgent || isAdmin },
-    { name: "Editor", href: "/editor", show: isUser || isAgent || isAdmin },
+    { name: "Create Ticket", href: "/create-ticket", show: isUser || isAgent || isAdmin },
     { name: "My Profile", href: "/user/profile", show: isUser },
     { name: "Dashboard", href: "/user/dashboard", show: isUser },
     { name: "Tickets", href: "/agent/tickets", show: isAgent },

@@ -1,9 +1,11 @@
 import { useState } from "react";
 import Editor from "../components/Editor";
+import { Input } from "../components";
 
-export default function EditorPage() {
+export default function CreateTicketPage() {
   const [content, setContent] = useState("my <b>HTML</b>");
   const [output, setOutput] = useState("");
+  const [title, setTitle] = useState("");
 
   const handleShowOutput = () => {
     setOutput(content);
@@ -11,7 +13,8 @@ export default function EditorPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
-      <h1 className="text-2xl font-semibold mb-3">Editor</h1>
+      <h1 className="text-2xl font-semibold mb-3">Create a support ticket</h1>
+      <Input label="Title" placeholder="Enter ticket title" className="mb-4" setValue={setTitle} />
       <Editor
         content={content}
         setContent={setContent}

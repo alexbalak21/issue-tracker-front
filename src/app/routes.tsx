@@ -11,7 +11,7 @@ import UpdateUserPassword from "../pages/User/UpdateUserPassword";
 import { UserLayout } from "../components";
 import { UserIcon, PencilSquareIcon, KeyIcon } from "@heroicons/react/24/outline";
 
-import EditorPage from "../pages/EditorPage";
+import CreateTicketPage from "../pages/CreateTicketPage";
 
 const userLinks = [
   { name: "Profile", href: "/profile", icon: UserIcon },
@@ -27,7 +27,7 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/demo" element={<ApiDemo />} />
-      <Route path="/editor" element={<EditorPage />} />
+      <Route path="/create-ticket" element={<CreateTicketPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
