@@ -32,7 +32,7 @@ export default function Select({ options, value, onChange, renderOption }: Selec
   }
 
   return (
-    <div className="mx-auto h-screen w-52 pt-20">
+    <div>
       <Listbox value={selected} onChange={handleChange}>
         <ListboxButton
           className={clsx(

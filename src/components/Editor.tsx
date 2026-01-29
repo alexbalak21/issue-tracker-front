@@ -17,6 +17,7 @@ import {
   BtnStyles,
 } from "react-simple-wysiwyg"
 import type { ContentEditableEvent } from "react-simple-wysiwyg"
+import "../styles/editor.css"
 
 interface EditorProps {
   content: string,

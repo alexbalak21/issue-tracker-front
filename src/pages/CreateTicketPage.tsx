@@ -1,12 +1,25 @@
 import { useState } from "react";
 import Editor from "../components/Editor";
 import { Input } from "../components";
+import Select from "../components/Select";
+import type {SelectOption }from "../components/Select";  
+
 
 export default function CreateTicketPage() {
   const [content, setContent] = useState("my <b>HTML</b>");
   const [output, setOutput] = useState("");
   const [title, setTitle] = useState("");
-  const [priority, setPriority] = useState(0);
+
+  // Mock priorities
+  const priorities: SelectOption[] = [
+    { id: 1, label: "Low" },
+    { id: 2, label: "Medium" },
+    { id: 3, label: "High" },
+    { id: 4, label: "Critical" },
+  ];
+
+  // Add missing state for priority
+  const [priority, setPriority] = useState<SelectOption>(priorities[0]);
 
   const handleShowOutput = () => {
     setOutput(content);
@@ -16,6 +29,16 @@ export default function CreateTicketPage() {
     <div className="mx-auto max-w-3xl px-4 py-6">
       <h1 className="text-2xl font-semibold mb-3">Create a support ticket</h1>
       <Input value={title} label="Title" placeholder="Enter ticket title" className="mb-4" onChange={e => setTitle(e.target.value)} />
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Priority</label>
+        <div className="max-w-xs">
+          <Select
+            options={priorities}
+            value={priority}
+            onChange={setPriority}
+          />
+        </div>
+      </div>
       <Editor
         content={content}
         setContent={setContent}
