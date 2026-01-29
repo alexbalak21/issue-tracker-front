@@ -1,54 +1,29 @@
 import { useState } from "react";
-import Editor, {
-  Toolbar,
-  BtnBold,
-  BtnItalic,
-  BtnUnderline,
-  BtnNumberedList,
-  BtnBulletList,
-  BtnLink,
-  BtnUndo,
-  BtnRedo,
-} from "react-simple-wysiwyg";
-import type { ContentEditableEvent } from "react-simple-wysiwyg";
+import Editor from "../components/Editor";
 
 export default function EditorPage() {
-  const [html, setHtml] = useState("my <b>HTML</b>");
+  const [content, setContent] = useState("my <b>HTML</b>");
+  const [output, setOutput] = useState("");
 
-  function onChange(e: ContentEditableEvent) {
-    setHtml(e.target.value);
-  }
+  const handleShowOutput = () => {
+    setOutput(content);
+  };
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-6">
       <h1 className="text-2xl font-semibold mb-3">Editor</h1>
-
       <Editor
-        value={html}
-        onChange={onChange}
-        containerProps={{
-          className: "border border-neutral-700 rounded-md shadow-sm",
-        }}
+        content={content}
+        setContent={setContent}
+      />
+      <button
+        className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
+        onClick={handleShowOutput}
       >
-        <Toolbar
-          style={{
-            background: "#f9f9f9",
-            borderBottom: "1px solid lightgray",
-          }}
-        >
-          <BtnBold />
-          <BtnItalic />
-          <BtnUnderline />
-          <BtnNumberedList />
-          <BtnBulletList />
-          <BtnLink />
-        </Toolbar>
-      </Editor>
-
-      {/* Preview (optional) */}
-      <div className="mt-6 p-4 border border-neutral-700 rounded-md">
-        <h2 className="font-semibold mb-2">Preview</h2>
-        <div dangerouslySetInnerHTML={{ __html: html }} />
+        Show Output
+      </button>
+      <div className="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-800 dark:text-white">
+        <div dangerouslySetInnerHTML={{ __html: output }} />
       </div>
     </div>
   );

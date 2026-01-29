@@ -129,7 +129,6 @@ export default function Profile() {
       {user && (
         <div className="space-y-3">
           <EditableText
-          className="text-red"
             label="Name"
             value={user.name}
             onSave={handleSaveName}

@@ -19,8 +19,8 @@ import {
 import type { ContentEditableEvent } from "react-simple-wysiwyg"
 
 interface EditorProps {
-  html: string,
-  setHtml: (value: string) => void
+  content: string,
+  setContent: (value: string) => void
 }
 
 /**
@@ -29,8 +29,8 @@ interface EditorProps {
  * A React component that provides a WYSIWYG HTML editor using react-simple-wysiwyg.
  *
  * Props:
- *   - html: string - The HTML content to display and edit.
- *   - setHtml: (value: string) => void - Callback to update the HTML content.
+ *   - content: string - The HTML content to display and edit.
+ *   - setContent: (value: string) => void - Callback to update the HTML content.
  *
  * Features:
  *   - Rich text editing with formatting toolbar (bold, italic, underline, lists, links, etc.)
@@ -40,16 +40,16 @@ interface EditorProps {
  *   - Toolbar and editor area are styled for modern UI out of the box.
  */
 
-export default function Editor({ html, setHtml }: EditorProps) {
+export default function Editor({ content, setContent }: EditorProps) {
   function onChange(e: ContentEditableEvent) {
-    setHtml(e.target.value)
+    setContent(e.target.value)
   }
 
   return (
     <EditorProvider>
       <div className="overflow-y-auto max-h-96">
         <WysiwygEditor
-          value={html}
+          value={content}
           onChange={onChange}
           className="
           w-full h-64 p-2 bg-white shadow-sm

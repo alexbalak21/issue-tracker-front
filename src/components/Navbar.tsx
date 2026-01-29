@@ -44,12 +44,12 @@ export default function Navbar({user}: NavbarProps) {
     <Disclosure
       as="nav"
       aria-label="Main navigation"
-      className="bg-white border-b border-gray-200 relative after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gray-200">
+      className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 relative after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-gray-200 dark:after:bg-gray-800">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Mobile menu button */}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-50 hover:text-black focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500">
+            <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-50 hover:text-black focus:outline-2 focus:-outline-offset-1 focus:outline-indigo-500 dark:hover:bg-gray-800 dark:hover:text-white">
               <span className="sr-only">Open main menu</span>
               <Bars3Icon aria-hidden="true" className="block size-6 group-data-open:hidden" />
               <XMarkIcon aria-hidden="true" className="hidden size-6 group-data-open:block" />
@@ -59,7 +59,7 @@ export default function Navbar({user}: NavbarProps) {
           {/* Logo + Desktop nav */}
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img alt="Company logo" src="/favicon.svg" className="h-8 w-auto" />
+              <img alt="Company logo" src="/favicon.svg" className="h-8 w-auto dark:invert" />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4 h-16">
@@ -70,8 +70,8 @@ export default function Navbar({user}: NavbarProps) {
                     aria-current={isActive(link.href) ? "page" : undefined}
                     className={classNames(
                       isActive(link.href)
-                        ? "text-indigo-600 font-semibold border-b-3 border-indigo-600"
-                        : "text-gray-500 hover:text-gray-800 hover:border-gray-300 border-transparent",
+                        ? "text-indigo-600 dark:text-indigo-400 font-semibold border-b-3 border-indigo-600 dark:border-indigo-400"
+                        : "text-gray-500 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white hover:border-gray-300 dark:hover:border-gray-600 border-transparent",
                       "flex items-center h-full px-3 text-sm font-medium border-b-2 transition-colors",
                     )}>
                     {/* If you want to add icons, add an 'icon' property to navLinks and render here */}
@@ -88,10 +88,10 @@ export default function Navbar({user}: NavbarProps) {
               <UserMenu user={user} />
             ) : (
               <>
-                <Link to="/login" className="block text-gray-700 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
+                <Link to="/login" className="block text-gray-700 dark:text-gray-200 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">
                   Login
                 </Link>
-                <Link to="/register" className="block text-indigo-600 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100">
+                <Link to="/register" className="block text-indigo-600 dark:text-indigo-400 px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:hover:bg-gray-800">
                   Sign up
                 </Link>
               </>
@@ -111,8 +111,8 @@ export default function Navbar({user}: NavbarProps) {
               aria-current={isActive(link.href) ? "page" : undefined}
               className={classNames(
                 isActive(link.href)
-                  ? "text-indigo-600 font-semibold bg-gray-50 border-l-4 border-indigo-600"
-                  : "text-gray-700 hover:text-indigo-600 hover:border-l-4 hover:border-indigo-600",
+                  ? "text-indigo-600 dark:text-indigo-400 font-semibold bg-gray-50 dark:bg-gray-800 border-l-4 border-indigo-600 dark:border-indigo-400"
+                  : "text-gray-700 dark:text-gray-200 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-l-4 hover:border-indigo-600 dark:hover:border-indigo-400",
                 "flex items-center px-3 py-2 text-base font-medium transition-colors w-full",
               )}>
               {/* If you want to add icons, add an 'icon' property to navLinks and render here */}
