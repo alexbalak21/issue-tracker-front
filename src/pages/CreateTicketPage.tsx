@@ -7,7 +7,6 @@ import type {SelectOption }from "../components/Select";
 
 export default function CreateTicketPage() {
   const [content, setContent] = useState("my <b>HTML</b>");
-  const [output, setOutput] = useState("");
   const [title, setTitle] = useState("");
 
   // Mock priorities
@@ -21,8 +20,10 @@ export default function CreateTicketPage() {
   // Add missing state for priority
   const [priority, setPriority] = useState<SelectOption>(priorities[0]);
 
-  const handleShowOutput = () => {
-    setOutput(content);
+  // Placeholder for submit handler
+  const handleSubmit = () => {
+    // TODO: Implement ticket submission logic
+    alert("Ticket submitted!");
   };
 
   return (
@@ -45,13 +46,10 @@ export default function CreateTicketPage() {
       />
       <button
         className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700"
-        onClick={handleShowOutput}
+        onClick={handleSubmit}
       >
-        Show Output
+        Submit the ticket
       </button>
-      <div className="mt-4 p-4 border rounded bg-gray-50 dark:bg-gray-800 dark:text-white">
-        <div dangerouslySetInnerHTML={{ __html: output }} />
-      </div>
     </div>
   );
 }
