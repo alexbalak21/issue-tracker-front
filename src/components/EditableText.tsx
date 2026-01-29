@@ -34,7 +34,7 @@ export default function EditableField({ label, value, onSave }: EditableFieldPro
   return (
     <div className="flex flex-col gap-1">
       <div className="flex gap-4 items-start">
-        <strong className="w-28 text-gray-700">{label}:</strong>
+        <strong className="w-28 text-gray-700 dark:text-gray-300">{label}:</strong>
         {editing ? (
           <div className="flex items-start gap-2 flex-1">
             <Input
@@ -64,7 +64,7 @@ export default function EditableField({ label, value, onSave }: EditableFieldPro
           </div>
         ) : (
           <div className="flex items-center justify-between flex-1">
-            <span className="text-gray-900">{value}</span>
+            <span className="text-gray-900 dark:text-white">{value}</span>
             {saved ? (
               <CheckIcon className="h-5 w-5 text-green-600" />
             ) : (

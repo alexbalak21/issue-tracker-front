@@ -74,17 +74,17 @@ export default function Profile() {
   };
 
   if (loading) {
-    return <div className="text-center p-8">Loading...</div>;
+    return <div className="text-center p-8 dark:bg-gray-900 dark:text-white">Loading...</div>;
   }
 
   if (!user) {
-    return <div className="text-center p-8">No user loaded.</div>;
+    return <div className="text-center p-8 dark:bg-gray-900 dark:text-white">No user loaded.</div>;
   }
 
   return (
-    <div className="w-full max-w-lg bg-white rounded-lg shadow-md p-8">
+    <div className="w-full max-w-lg bg-white dark:bg-gray-900 rounded-lg shadow-md p-8 dark:shadow-lg dark:border dark:border-gray-700">
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-semibold">User Profile</h2>
+        <h2 className="text-xl font-semibold dark:text-white">User Profile</h2>
         <Button
           variant="secondary"
           onClick={() => navigate("/update-profile")}
@@ -101,8 +101,8 @@ export default function Profile() {
             imageUrl={user?.profileImage}
             size={96}
           />
-          <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
-            <span className="text-white text-xs">Upload</span>
+          <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity dark:bg-gray-800 dark:bg-opacity-70">
+            <span className="text-white text-xs dark:text-gray-200">Upload</span>
             <input
               type="file"
               accept="image/*"
@@ -118,7 +118,7 @@ export default function Profile() {
 
       {/* Theme selector */}
       <div className="flex gap-4 items-center mb-6">
-        <strong className="w-28 text-gray-700">Theme:</strong>
+        <strong className="w-28 text-gray-700 dark:text-gray-300">Theme:</strong>
         <SimpleSelect
           options={["light", "dark", "system"]}
           value={theme}
@@ -129,6 +129,7 @@ export default function Profile() {
       {user && (
         <div className="space-y-3">
           <EditableText
+          className="text-red"
             label="Name"
             value={user.name}
             onSave={handleSaveName}
@@ -142,7 +143,7 @@ export default function Profile() {
 
 
           <div className="flex gap-4 items-center">
-            <strong className="w-28 text-gray-700">Active Role:</strong>
+            <strong className="w-28 text-gray-700 dark:text-gray-300">Active Role:</strong>
             {user.roles.length > 1 ? (
               <SimpleSelect
                 options={user.roles}
@@ -150,27 +151,27 @@ export default function Profile() {
                 onChange={setActiveRole}
               />
             ) : (
-              <span className="text-gray-900">{user.roles[0]}</span>
+              <span className="text-gray-900 dark:text-gray-100">{user.roles[0]}</span>
             )}
           </div>
 
           {user.roles.length > 1 && (
             <div className="flex gap-4">
-              <strong className="w-28 text-gray-700">All Roles:</strong>
-              <span className="text-gray-900">{user.roles.join(", ")}</span>
+              <strong className="w-28 text-gray-700 dark:text-gray-300">All Roles:</strong>
+              <span className="text-gray-900 dark:text-gray-100">{user.roles.join(", ")}</span>
             </div>
           )}
 
           <div className="flex gap-4">
-            <strong className="w-28 text-gray-700">Created:</strong>
-            <span className="text-gray-900">
+            <strong className="w-28 text-gray-700 dark:text-gray-300">Created:</strong>
+            <span className="text-gray-900 dark:text-gray-100">
               {new Date(user.createdAt).toLocaleString()}
             </span>
           </div>
 
           <div className="flex gap-4">
-            <strong className="w-28 text-gray-700">Updated:</strong>
-            <span className="text-gray-900">
+            <strong className="w-28 text-gray-700 dark:text-gray-300">Updated:</strong>
+            <span className="text-gray-900 dark:text-gray-100">
               {new Date(user.updatedAt).toLocaleString()}
             </span>
           </div>

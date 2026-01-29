@@ -21,7 +21,7 @@ export default function Avatar({
         src={imageUrl}
         alt={name || "User avatar"}
         style={{ width: size, height: size }}
-        className="rounded-full object-cover"
+        className="rounded-full object-cover bg-white dark:bg-gray-800"
       />
     );
   }
@@ -29,7 +29,7 @@ export default function Avatar({
   return (
     <div
       style={{ width: size, height: size }}
-      className={`flex items-center justify-center rounded-full ${bgColor} ${textColor} font-semibold`}
+      className={`flex items-center justify-center rounded-full ${bgColor} ${textColor} font-semibold dark:bg-gray-700 dark:text-white`}
     >
       {initial}
     </div>
