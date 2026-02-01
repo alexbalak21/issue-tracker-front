@@ -56,7 +56,8 @@ export default function Select({
           className={clsx(
             "w-[var(--button-width)] rounded-xl border border-gray-200 bg-white p-1 shadow-md focus:outline-none",
             "dark:border-white/5 dark:bg-gray-800",
-            "transition duration-100 ease-in data-leave:data-closed:opacity-0"
+            "transition duration-100 ease-in data-leave:data-closed:opacity-0",
+            priorityColors[selected.id].bg
           )}
         >
           {options.map(opt => (

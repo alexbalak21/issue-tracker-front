@@ -13,6 +13,7 @@ import { UserIcon, PencilSquareIcon, KeyIcon } from "@heroicons/react/24/outline
 
 import CreateTicketPage from "../pages/Ticket/CreateTicketPage";
 import TicketListPage from "../pages/Ticket/TicketListPage";
+import TicketDetailsPage from "../pages/Ticket/TicketDetailsPage";
 
 const userLinks = [
   { name: "Profile", href: "/profile", icon: UserIcon },
@@ -30,6 +31,7 @@ export function AppRoutes() {
       <Route path="/demo" element={<ApiDemo />} />
       <Route path="/create-ticket" element={<CreateTicketPage />} />
       <Route path="/ticket-list" element={<TicketListPage />} />
+      <Route path="/ticket/:id" element={<TicketDetailsPage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 

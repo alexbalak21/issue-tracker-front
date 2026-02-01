@@ -39,7 +39,7 @@ export default function Select({
       <div className={clsx("w-full", className)}>
         <ListboxButton
           className={clsx(
-            "relative block w-full rounded-lg bg-white text-gray-900 outline outline-1 outline-gray-300 py-1.5 pr-8 pl-3 text-left text-sm",
+            "relative block w-full rounded-lg bg-white text-gray-900 outline outline-1 outline-gray-300 py-1.5 pr-8 pl-3 text-left",
             "dark:bg-gray-800 dark:text-white dark:outline-gray-700"
           )}
         >
@@ -64,7 +64,7 @@ export default function Select({
               key={opt.id}
               value={opt}
               className={clsx(
-                "group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none",
+                "group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none bg-red-500",
                 "data-focus:bg-gray-100 dark:data-focus:bg-white/10"
               )}
             >

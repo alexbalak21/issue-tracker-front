@@ -1,7 +1,7 @@
 import Select from "../components/Select";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { useState } from "react";
-import type { SelectOption } from "../components/Select"; // <-- IMPORTANT
+import type { SelectOption } from "@components/Select";
 
 export default function About() {
 
@@ -50,7 +50,6 @@ export default function About() {
           options={options}
           value={selected}
           onChange={setSelected}
-          renderOption={(opt) => opt.label}
         />
       </div>
     </div>
