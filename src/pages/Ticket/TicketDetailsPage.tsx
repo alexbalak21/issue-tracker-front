@@ -64,42 +64,80 @@ const TicketDetailsPage: React.FC = () => {
 
   return (
     <div className="min-h-[60vh] max-w-7xl mx-auto mt-6">
-      <div className="border border-gray-300 w-full rounded-lg p-6 min-w-[350px] bg-white shadow-sm">
+      <div className="border border-gray-300 w-full rounded-lg p-6 min-w-87.5 bg-white shadow-sm">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
-            {ticket.title}
-          </h1>
-
-          <div className="flex flex-col items-center gap-2">
-            <Tooltip content={`Status`}>
-              <div>
-                <StatusChip statusId={ticket.statusId} statusName={status?.name} />
-              </div>
-            </Tooltip>
-            <Tooltip content={`Assigned To`}>
-              <div>
-                <AssignedChip userId={ticket.assignedTo} />
-              </div>
-            </Tooltip>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="flex flex-col gap-2">
+            <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+              {ticket.title}
+            </h1>
+            <div className="text-sm text-gray-600">
+              <span className="font-semibold">Created at:</span>{' '}
+              <Tooltip
+                content={new Date(ticket.createdAt).toLocaleTimeString('en-GB', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  hour12: false,
+                })}
+              >
+                <span className="inline-block">
+                  {new Date(ticket.createdAt).toLocaleDateString('en-GB', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: '2-digit',
+                  })}
+                </span>
+              </Tooltip>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-extralight pb-1">Priority:</span>
+              <Tooltip content={`Priority`}>
+                <span className="inline-block">
+                  <PriorityChip priorityId={ticket.priorityId} priorityName={priority?.name} />
+                </span>
+              </Tooltip>
+            </div>
           </div>
-        </div>
-         <div className="mt-3 flex items-center gap-2">
-          <span className="font-extralight pb-1">Priority:</span>
-          <Tooltip content={`Priority`}>
-            <span className="inline-block">
-              <PriorityChip priorityId={ticket.priorityId} priorityName={priority?.name} />
-            </span>
-          </Tooltip>
+          <div className="flex flex-col items-start sm:items-end gap-2">
+            <div className="flex items-center gap-2">
+              <span className="font-extralight pb-1">Assigned to:</span>
+              <Tooltip content={`Assigned To`}>
+                <div>
+                  <AssignedChip userId={ticket.assignedTo} />
+                </div>
+              </Tooltip>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="font-extralight pb-1">Status:</span>
+              <Tooltip content={`Status`}>
+                <div>
+                  <StatusChip statusId={ticket.statusId} statusName={status?.name} />
+                </div>
+              </Tooltip>
+            </div>
+          </div>
         </div>
 
         <div className="my-4 text-gray-700 border border-gray-300 rounded-lg py-2 px-3 h-[50vh]">{ticket.body}</div>
         <div className="mb-2"></div>
-       
-        <div className="mb-2"><span className="font-semibold">Created by (user id):</span> {ticket.createdBy}</div>
-        <div className="mb-2"><span className="font-semibold">Assigned to (user id):</span> {ticket.assignedTo ?? 'Unassigned'}</div>
-        <div className="mb-2"><span className="font-semibold">Created at:</span> {new Date(ticket.createdAt).toLocaleString()}</div>
-        <div className="mb-2"><span className="font-semibold">Updated at:</span> {new Date(ticket.updatedAt).toLocaleString()}</div>
+        <div className="mb-2 text-right text-sm text-gray-600">
+          <span className="font-semibold">Updated at:</span>{' '}
+          <Tooltip
+            content={new Date(ticket.updatedAt).toLocaleTimeString('en-GB', {
+              hour: '2-digit',
+              minute: '2-digit',
+              hour12: false,
+            })}
+          >
+            <span className="inline-block">
+              {new Date(ticket.updatedAt).toLocaleDateString('en-GB', {
+                day: '2-digit',
+                month: '2-digit',
+                year: '2-digit',
+              })}
+            </span>
+          </Tooltip>
+        </div>
         {ticket.resolvedAt && (
           <div className="mb-2"><span className="font-semibold">Resolved at:</span> {new Date(ticket.resolvedAt).toLocaleString()}</div>
         )}
