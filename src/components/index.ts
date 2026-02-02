@@ -9,5 +9,6 @@ export { default as Toast } from "./Toast";
 export { default as ToastContainer, useToast } from "./ToastContainer";
 export { default as UserLayout } from "./UserLayout";
 export { default as UserMenu } from "./UserMenu";
+export { default as AdminTicketList } from "./AdminTicketList";
 
 export type { SidebarLink } from "./Sidebar";

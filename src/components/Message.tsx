@@ -1,6 +1,6 @@
-import React from 'react';
-import { useUser } from '../features/user';
-import Avatar from './Avatar';
+import React from "react";
+import { useUser, useUsers } from "../features/user";
+import Avatar from "./Avatar";
 
 interface MessageProps {
   id: number;
@@ -12,7 +12,9 @@ interface MessageProps {
 
 const Message: React.FC<MessageProps> = ({ id, senderId, body, createdAt, updatedAt }) => {
   const { user } = useUser();
+  const { users } = useUsers();
   const isCurrentUser = user?.id === senderId;
+  const sender = users.find(u => u.id === senderId);
   
   const formattedDate = new Date(createdAt).toLocaleString('en-GB', {
     day: '2-digit',
@@ -30,12 +32,10 @@ const Message: React.FC<MessageProps> = ({ id, senderId, body, createdAt, update
           {isCurrentUser ? (
             <Avatar name={user.name} imageUrl={user.profileImage} size={32} />
           ) : (
-            <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-semibold">
-              {senderId}
-            </div>
+            <Avatar name={sender?.name ?? `User ${senderId}`} size={32} />
           )}
           <span className="text-sm font-semibold text-gray-700">
-            {isCurrentUser ? user.name : `User ${senderId}`}
+            {isCurrentUser ? user.name : sender?.name ?? `User ${senderId}`}
           </span>
         </div>
         <span className="text-xs text-gray-500">{formattedDate}</span>
