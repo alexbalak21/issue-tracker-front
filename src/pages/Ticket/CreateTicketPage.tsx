@@ -73,7 +73,7 @@ export default function CreateTicketPage() {
         disabled={
           creating ||
           !priorityId ||
-          !title.trim() ||
+          !title.trim() ||  
           !content.trim()
         }
       >
