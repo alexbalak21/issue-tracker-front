@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button, Input } from '../../components';
 import { useAuth } from "../../features/auth";
+import { USER_ENDPOINTS } from "../../features/user";
 import { useToast } from "../../components/ToastContainer";
 
 export default function UpdateUserPassword() {
@@ -37,7 +38,7 @@ export default function UpdateUserPassword() {
 
     try {
       setLoading(true);
-      const response = await apiClient("/api/user/password", {
+      const response = await apiClient(USER_ENDPOINTS.password, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Input, Avatar } from "../../components";
-import { useUser } from "../../features/user";
+import { useUser, USER_ENDPOINTS } from "../../features/user";
 import { useAuth } from "../../features/auth";
 
 export default function UpdateProfile() {
@@ -37,7 +37,7 @@ export default function UpdateProfile() {
     setError(null);
 
     try {
-      const response = await apiClient("/api/user", {
+      const response = await apiClient(USER_ENDPOINTS.me, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -68,7 +68,7 @@ export default function UpdateProfile() {
     try {
       const form = new FormData();
       form.append("file", file);
-      const response = await apiClient("/api/user/profile-image", {
+      const response = await apiClient(USER_ENDPOINTS.profileImage, {
         method: "POST",
         body: form,
       });

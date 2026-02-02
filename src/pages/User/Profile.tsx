@@ -3,7 +3,7 @@ import { useTheme } from "../../features/theme/useTheme";
 import type { Theme } from "../../features/theme/useTheme";
 import { useNavigate } from "react-router-dom";
 import { Button, EditableText, Avatar } from "../../components";
-import { useUser } from "../../features/user";
+import { useUser, USER_ENDPOINTS } from "../../features/user";
 import { useRole } from "../../features/auth/useRole";
 import { useAuth } from "../../features/auth";
 import SimpleSelect from "../../components/SimpleSelct";
@@ -22,7 +22,7 @@ export default function Profile() {
     if (user) {
       setLoading(true);
       try {
-        const response = await apiClient("/api/user", {
+        const response = await apiClient(USER_ENDPOINTS.me, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ name: newName }),
@@ -41,7 +41,7 @@ export default function Profile() {
     if (user) {
       setLoading(true);
       try {
-        const response = await apiClient("/api/user", {
+        const response = await apiClient(USER_ENDPOINTS.me, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email: newEmail }),
@@ -60,7 +60,7 @@ export default function Profile() {
     try {
       const formData = new FormData();
       formData.append("file", file);
-      const response = await apiClient("/api/user/profile-image", {
+      const response = await apiClient(USER_ENDPOINTS.profileImage, {
         method: "POST",
         body: formData,
       });

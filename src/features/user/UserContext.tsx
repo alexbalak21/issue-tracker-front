@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useRef } from "react";
 import { useAuth } from "../auth";
 import type { UserInfo, UserContextType, Role } from "./user.types";
+import { USER_ENDPOINTS } from "./user.endpoints";
 
 type RawUser = {
   id: number;
@@ -70,12 +71,12 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
 
     const fetchUser = async () => {
       try {
-        const response = await apiClient("/api/user");
-        console.log("[UserContext] /api/user response:", response);
+        const response = await apiClient(USER_ENDPOINTS.me);
+        console.log("[UserContext] /auth/me response:", response);
 
         if (response.ok) {
           const userData = await response.json();
-          console.log("[UserContext] /api/user userData:", userData);
+          console.log("[UserContext] /auth/me userData:", userData);
           const normalized = normalizeUserData(userData);
           setUser(normalized);
           // If activeRole is not in user's roles, set to first role
