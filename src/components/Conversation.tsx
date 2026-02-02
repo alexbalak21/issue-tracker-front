@@ -23,9 +23,9 @@ const Conversation: React.FC<ConversationProps> = ({ messages }) => {
   }
 
   return (
-    <div className="border border-gray-300 rounded-lg p-6 bg-gray-50">
-      <h2 className="text-xl font-bold text-gray-900 mb-4">Conversation</h2>
-      <div className="flex flex-col gap-3">
+    <div className="border border-gray-300 rounded-lg p-6 bg-gray-50 dark:bg-gray-900 dark:border-gray-700">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Conversation</h2>
+      <div className="flex flex-col gap-4">
         {messages.map((message) => (
           <Message
             key={message.id}
@@ -42,3 +42,5 @@ const Conversation: React.FC<ConversationProps> = ({ messages }) => {
 };
 
 export default Conversation;
+
+
