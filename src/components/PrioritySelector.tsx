@@ -22,6 +22,7 @@ type PrioritySelectorProps = {
   priorityName?: string;
   ticketId?: string | number;
   onSave?: (newPriorityId: number) => void;
+  onChange?: (priorityId: number) => void;
 };
 
 type SelectorUIProps = {
@@ -97,6 +98,7 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
   priorityName,
   ticketId,
   onSave,
+  onChange,
 }) => {
   const { priorities, loading } = usePriorities();
   const { patchPriority, loading: patchLoading, error: patchError } = usePatchTicketPriority();
@@ -126,37 +128,47 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
   useEffect(() => {
     if (!options.length) return;
 
+    let matchedOption: SelectOption | undefined;
+
     if (priorityId) {
       const match = options.find((opt) => opt.id === priorityId);
       if (match) {
-        setSelected(match);
-        setHasChanged(false);
-        return;
+        matchedOption = match;
       }
     }
 
-    if (priorityName) {
+    if (!matchedOption && priorityName) {
       const matchPriority = priorities.find(
         (priority) => priority.name.toLowerCase() === priorityName.toLowerCase()
       );
       if (matchPriority) {
         const match = options.find((opt) => opt.id === matchPriority.id);
         if (match) {
-          setSelected(match);
-          setHasChanged(false);
-          return;
+          matchedOption = match;
         }
       }
     }
 
-    setSelected(options[0]);
+    if (!matchedOption) {
+      matchedOption = options[0];
+    }
+
+    setSelected(matchedOption);
     setHasChanged(false);
-  }, [options, priorities, priorityId, priorityName]);
+    // Call onChange when a selection is set (only if not ticketId, meaning it's for creation)
+    if (!ticketId && onChange) {
+      onChange(matchedOption.id);
+    }
+  }, [options, priorities, priorityId, priorityName, ticketId, onChange]);
 
   const handleChange = (opt: SelectOption) => {
     setSelected(opt);
-    setHasChanged(opt.id !== priorityId);
+    setHasChanged(ticketId ? opt.id !== priorityId : false);
     setSaveError(null);
+    // For creation page, call onChange to update parent state
+    if (!ticketId && onChange) {
+      onChange(opt.id);
+    }
   };
 
   const handleSave = async () => {

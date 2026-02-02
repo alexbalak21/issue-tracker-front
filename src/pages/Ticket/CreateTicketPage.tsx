@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Editor from "@components/Editor";
 import Input from "@components/Input";
 import { PrioritySelector } from "@/components/PrioritySelector";
 import { useCreateTicket } from "../../features/ticket/useCreateTicket";
+import { useToast } from "@/components/ToastContainer";
 
 export default function CreateTicketPage() {
   const [content, setContent] = useState("");
   const [title, setTitle] = useState("");
   const [priorityId, setPriorityId] = useState<number | undefined>(undefined);
+  const navigate = useNavigate();
+  const toast = useToast();
 
   const {
     createTicket,
@@ -27,10 +31,10 @@ export default function CreateTicketPage() {
 
     try {
       await createTicket(payload);
-      setTitle("");
-      setContent("");
-      setPriorityId(undefined);
-      alert("Ticket submitted!");
+      toast.success("Ticket created successfully!");
+      setTimeout(() => {
+        navigate("/ticket-list");
+      }, 500);
     } catch (err) {
       console.log("❌ Submit error:", err);
     }
@@ -52,7 +56,7 @@ export default function CreateTicketPage() {
         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
           Priority
         </label>
-        <PrioritySelector priorityId={priorityId} />
+        <PrioritySelector priorityId={priorityId} onChange={setPriorityId} />
       </div>
 
       <Editor
@@ -75,10 +79,6 @@ export default function CreateTicketPage() {
       >
         {creating ? "Submitting..." : "Submit the ticket"}
       </button>
-
-      {success && (
-        <div className="text-green-600 mt-2">Ticket created successfully!</div>
-      )}
     </div>
   );
 }
