@@ -97,7 +97,7 @@ const TicketDetailsPage: React.FC = () => {
             </div>
             <div className="flex items-center gap-2">
               <span className="font-extralight pb-1">Priority:</span>
-              <Tooltip content={`Priority`}>
+              
                 <span className="inline-block">
                   <PrioritySelector 
                     priorityId={ticket.priorityId} 
@@ -106,7 +106,7 @@ const TicketDetailsPage: React.FC = () => {
                     onSave={handlePrioritySaved}
                   />
                 </span>
-              </Tooltip>
+             
             </div>
           </div>
           <div className="flex flex-col items-start sm:items-end gap-2">

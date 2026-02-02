@@ -193,42 +193,46 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
   }
 
   return (
-    <div className="flex flex-col gap-2">
-      <PrioritySelectorUI
-        options={options}
-        value={selected ?? options[0]}
-        onChange={handleChange}
-        className="w-full py-1.5 pr-8 pl-3 text-sm"
-      />
-      {hasChanged && ticketId && (
-        <div className="flex gap-2">
-          <button
-            onClick={handleSave}
-            disabled={patchLoading}
-            className={clsx(
-              "px-3 py-1.5 rounded text-sm font-medium transition-colors",
-              "bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed"
-            )}
-          >
-            {patchLoading ? 'Saving...' : 'Save'}
-          </button>
-          <button
-            onClick={() => {
-              const originalOpt = options.find((opt) => opt.id === priorityId) || options[0];
-              setSelected(originalOpt);
-              setHasChanged(false);
-              setSaveError(null);
-            }}
-            disabled={patchLoading}
-            className={clsx(
-              "px-3 py-1.5 rounded text-sm font-medium transition-colors",
-              "bg-gray-300 text-gray-700 hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
-            )}
-          >
-            Cancel
-          </button>
+    <div>
+      <div className="flex flex-row gap-2 items-start">
+        <div className="flex-1">
+          <PrioritySelectorUI
+            options={options}
+            value={selected ?? options[0]}
+            onChange={handleChange}
+            className="w-full py-1.5 pr-8 pl-3 text-sm"
+          />
         </div>
-      )}
+        {hasChanged && ticketId && (
+          <div className="flex gap-2 pt-0">
+            <button
+              onClick={handleSave}
+              disabled={patchLoading}
+              className={clsx(
+                "px-3 py-1.5 rounded text-sm font-medium transition-colors",
+                "bg-blue-500 text-white hover:bg-blue-600 disabled:bg-blue-400 disabled:cursor-not-allowed"
+              )}
+            >
+              {patchLoading ? 'Saving...' : 'Save'}
+            </button>
+            <button
+              onClick={() => {
+                const originalOpt = options.find((opt) => opt.id === priorityId) || options[0];
+                setSelected(originalOpt);
+                setHasChanged(false);
+                setSaveError(null);
+              }}
+              disabled={patchLoading}
+              className={clsx(
+                "px-3 py-1.5 rounded text-sm font-medium transition-colors",
+                "bg-gray-300 text-gray-700 hover:bg-gray-400 disabled:bg-gray-200 disabled:cursor-not-allowed"
+              )}
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
       {saveError && (
         <div className="text-sm text-red-600 mt-1">
           {saveError}
