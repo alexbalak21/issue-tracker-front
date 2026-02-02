@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import type { Ticket } from "../features/ticket/useTickets";
 
 interface TicketListProps {
@@ -21,7 +22,7 @@ export default function TicketList({ tickets }: TicketListProps) {
           {tickets.map(ticket => (
             <tr key={ticket.id}>
               <td className="px-4 py-2 whitespace-nowrap">{ticket.id}</td>
-              <td className="px-4 py-2 whitespace-nowrap">{ticket.title}</td>
+              <td className="px-4 py-2 whitespace-nowrap"><Link to={`/ticket/${ticket.id}`}>{ticket.title}</Link></td>
               <td className="px-4 py-2 whitespace-nowrap">{ticket.priorityId}</td>
               <td className="px-4 py-2 whitespace-nowrap">{ticket.statusId}</td>
               <td className="px-4 py-2 whitespace-nowrap">{new Date(ticket.createdAt).toLocaleString()}</td>
