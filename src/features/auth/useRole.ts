@@ -19,7 +19,7 @@ export function useRole() {
     hasRole,
     isActiveRole,
     isUser: activeRole === "USER",
-    isAgent: activeRole === "AGENT",
+    isSupport: activeRole === "SUPPORT",
     isAdmin: activeRole === "ADMIN",
     isVisitor: activeRole === "VISITOR" || !activeRole,
   };

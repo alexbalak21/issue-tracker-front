@@ -1,6 +1,8 @@
 import {Disclosure, DisclosureButton, DisclosurePanel} from "@headlessui/react"
 import {Bars3Icon, XMarkIcon} from "@heroicons/react/24/outline"
+import {useMemo} from "react"
 import {Link, useLocation} from "react-router-dom"
+import {useRole} from "../features/auth/useRole"
 import UserMenu from "./UserMenu"
 
 function classNames(...classes: Array<string | false | null | undefined>): string {
@@ -10,34 +12,36 @@ function classNames(...classes: Array<string | false | null | undefined>): strin
 interface NavbarProps {
   user?: {name: string; email: string; profileImage?: string | null} | null
 }
-import { useRole } from "../features/auth/useRole";
+
+type NavLink = {
+  name: string
+  href: string
+  show: boolean
+}
 
 export default function Navbar({user}: NavbarProps) {
   const location = useLocation();
 
-  const { isUser, isAgent, isAdmin, isVisitor } = useRole();
+  const {isUser, isSupport, isAdmin, isVisitor} = useRole()
 
-  console.log("[Navbar] isUser:", isUser);
-  console.log("[Navbar] isAgent:", isAgent);
-  console.log("[Navbar] isAdmin:", isAdmin);
-  console.log("[Navbar] isVisitor:", isVisitor);
+  const navLinks: NavLink[] = useMemo(
+    () => [
+      {name: "Home", href: "/", show: true},
+      {name: "About", href: "/about", show: isVisitor},
+      {name: "API Demo", href: "/demo", show: isUser || isSupport || isAdmin},
+      {name: "Create Ticket", href: "/create-ticket", show: isUser || isSupport || isAdmin},
+      {name: "My Tickets", href: "/ticket-list", show: isUser},
+      {name: "My Profile", href: "/user/profile", show: isUser},
+      {name: "Dashboard", href: "/user/dashboard", show: isUser},
+      {name: "Tickets", href: "/agent/tickets", show: isSupport},
+      {name: "Support Dashboard", href: "/support/dashboard", show: isSupport},
+      {name: "Manage Users", href: "/admin/users", show: isAdmin},
+      {name: "Admin Settings", href: "/admin/settings", show: isAdmin},
+    ],
+    [isAdmin, isSupport, isUser, isVisitor],
+  )
 
-  const navLinks = [
-    { name: "Home", href: "/", show: true },
-    { name: "About", href: "/about", show: isVisitor },
-    { name: "API Demo", href: "/demo", show: isUser || isAgent || isAdmin },
-    { name: "Create Ticket", href: "/create-ticket", show: isUser || isAgent || isAdmin },
-    { name: "My Tickets", href: "/ticket-list", show: isUser },
-    { name: "My Profile", href: "/user/profile", show: isUser },
-    { name: "Dashboard", href: "/user/dashboard", show: isUser },
-    { name: "Tickets", href: "/agent/tickets", show: isAgent },
-    { name: "Agent Dashboard", href: "/agent/dashboard", show: isAgent },
-    { name: "Manage Users", href: "/admin/users", show: isAdmin },
-    { name: "Admin Settings", href: "/admin/settings", show: isAdmin },
-  ];
-
-  console.log("[Navbar] navLinks:", navLinks);
-  console.log("[Navbar] navLinks to render:", navLinks.filter(l => l.show));
+  const visibleNavLinks = useMemo(() => navLinks.filter(link => link.show), [navLinks])
 
   const isActive = (path: string) => location.pathname === path;
 
@@ -64,7 +68,7 @@ export default function Navbar({user}: NavbarProps) {
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4 h-16">
-                {navLinks.filter(l => l.show).map(link => (
+                {visibleNavLinks.map(link => (
                   <Link
                     key={link.name}
                     to={link.href}
@@ -104,7 +108,7 @@ export default function Navbar({user}: NavbarProps) {
       {/* Mobile nav */}
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 pt-2 pb-3">
-          {navLinks.filter(l => l.show).map(link => (
+          {visibleNavLinks.map(link => (
             <DisclosureButton
               key={link.name}
               as={Link}
