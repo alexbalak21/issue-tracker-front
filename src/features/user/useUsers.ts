@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../auth";
-import { USER_ENDPOINTS } from "./user.endpoints";
 
 export interface BasicUser {
   id: number;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useUsers } from '../features/user/useUsers';
 
 interface AssignedChipProps {
   userId?: number | null;
@@ -6,7 +7,9 @@ interface AssignedChipProps {
 }
 
 const AssignedChip: React.FC<AssignedChipProps> = ({ userId, userName }) => {
+  const { users } = useUsers();
   const isUnassigned = !userId;
+  const resolvedName = userName ?? users.find((user) => user.id === userId)?.name;
 
   return (
     <span
@@ -16,7 +19,7 @@ const AssignedChip: React.FC<AssignedChipProps> = ({ userId, userName }) => {
           : 'bg-blue-100 text-blue-800 border-blue-300 dark:bg-blue-900 dark:text-blue-200 dark:border-blue-700'
       }`}
     >
-      {isUnassigned ? 'Unassigned' : userName || `User #${userId}`}
+      {isUnassigned ? 'Unassigned' : resolvedName || `User #${userId}`}
     </span>
   );
 };

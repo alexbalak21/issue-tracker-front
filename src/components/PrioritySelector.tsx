@@ -23,74 +23,14 @@ type PrioritySelectorProps = {
   ticketId?: string | number;
   onSave?: (newPriorityId: number) => void;
   onChange?: (priorityId: number) => void;
+  disabled?: boolean;
 };
 
-type SelectorUIProps = {
-  options: SelectOption[]
-  value?: SelectOption
-  onChange?: (opt: SelectOption) => void
-  className?: string
-}
-
 function getPriorityColor(priorityId?: number) {
-  if (!priorityId || !priorityDotColors[priorityId as keyof typeof priorityDotColors]) {
+  if (!priorityId || !priorityDotColors[priorityId as 1 | 2 | 3 | 4]) {
     return priorityDotColors[1];
   }
-  return priorityDotColors[priorityId as keyof typeof priorityDotColors];
-}
-
-function PrioritySelectorUI({
-  options,
-  value,
-  onChange,
-  className,
-}: SelectorUIProps) {
-
-  // Fully controlled: if parent gives a value, use it.
-  // Otherwise fallback to first option.
-  const selected = value ?? options[0]
-
-  return (
-    <Listbox value={selected} onChange={onChange}>
-      <div className="relative w-full">
-        <ListboxButton
-          className={clsx(
-            "relative block ps-4 rounded-lg bg-white text-gray-900 outline outline-gray-300 text-left whitespace-nowrap",
-            "dark:bg-gray-800 dark:text-white dark:outline-gray-700",
-            className
-          )}
-        >
-          {selected.label}
-
-          <ChevronDownIcon
-            className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-2.5 size-4 text-gray-500 dark:fill-white/60"
-          />
-        </ListboxButton>
-
-        <ListboxOptions
-          transition
-          className={clsx(
-            "absolute left-0 top-full mt-1 min-w-full rounded-xl border border-gray-200 bg-white p-1 shadow-md focus:outline-none z-10",
-            "dark:border-white/5 dark:bg-gray-800",
-            "transition duration-100 ease-in data-leave:data-closed:opacity-0"
-          )}
-        >
-          {options.map(opt => (
-            <ListboxOption
-              key={opt.id}
-              value={opt}
-              className={clsx(
-                "group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none",
-                "data-focus:bg-gray-100 dark:data-focus:bg-white/10"
-              )}
-            >
-              {opt.label}
-            </ListboxOption>
-          ))}
-        </ListboxOptions>
-      </div>
-    </Listbox>
-  )
+  return priorityDotColors[priorityId as 1 | 2 | 3 | 4];
 }
 
 export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
@@ -99,7 +39,9 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
   ticketId,
   onSave,
   onChange,
+  disabled = false,
 }) => {
+
   const { priorities, loading } = usePriorities();
   const { patchPriority, loading: patchLoading, error: patchError } = usePatchTicketPriority();
 
@@ -110,9 +52,7 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
         label: (
           <span className="inline-flex items-center gap-2">
             <span
-              className={`w-3 h-3 rounded-sm ${
-                getPriorityColor(priority.id).bg
-              }`}
+              className={`w-3 h-3 rounded-sm ${getPriorityColor(priority.id).bg}`}
             ></span>
             {priority.name}
           </span>
@@ -125,16 +65,14 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
   const [hasChanged, setHasChanged] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
+  // Initialize selected option
   useEffect(() => {
     if (!options.length) return;
 
     let matchedOption: SelectOption | undefined;
 
     if (priorityId) {
-      const match = options.find((opt) => opt.id === priorityId);
-      if (match) {
-        matchedOption = match;
-      }
+      matchedOption = options.find((opt) => opt.id === priorityId);
     }
 
     if (!matchedOption && priorityName) {
@@ -142,36 +80,34 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
         (priority) => priority.name.toLowerCase() === priorityName.toLowerCase()
       );
       if (matchPriority) {
-        const match = options.find((opt) => opt.id === matchPriority.id);
-        if (match) {
-          matchedOption = match;
-        }
+        matchedOption = options.find((opt) => opt.id === matchPriority.id);
       }
     }
 
-    if (!matchedOption) {
-      matchedOption = options[0];
-    }
+    if (!matchedOption) matchedOption = options[0];
 
     setSelected(matchedOption);
     setHasChanged(false);
-    // Call onChange when a selection is set (only if not ticketId, meaning it's for creation)
+
     if (!ticketId && onChange) {
       onChange(matchedOption.id);
     }
   }, [options, priorities, priorityId, priorityName, ticketId, onChange]);
 
   const handleChange = (opt: SelectOption) => {
+    if (disabled) return;
+
     setSelected(opt);
     setHasChanged(ticketId ? opt.id !== priorityId : false);
     setSaveError(null);
-    // For creation page, call onChange to update parent state
+
     if (!ticketId && onChange) {
       onChange(opt.id);
     }
   };
 
   const handleSave = async () => {
+    if (disabled) return;
     if (!selected || !ticketId) return;
 
     try {
@@ -196,14 +132,53 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
     <div>
       <div className="flex flex-row gap-2 items-start">
         <div className="flex-1">
-          <PrioritySelectorUI
-            options={options}
-            value={selected ?? options[0]}
-            onChange={handleChange}
-            className="w-full py-1.5 pr-8 pl-3 text-sm"
-          />
+          <Listbox value={selected} onChange={handleChange} disabled={disabled}>
+            <div className="relative w-full">
+
+              <ListboxButton
+                disabled={disabled}
+                className={clsx(
+                  "relative block ps-4 rounded-lg bg-white text-gray-900 outline outline-gray-300 text-left whitespace-nowrap",
+                  "dark:bg-gray-800 dark:text-white dark:outline-gray-700",
+                  disabled && "opacity-50 cursor-not-allowed",
+                  "w-full py-1.5 pr-8 pl-3 text-sm"
+                )}
+              >
+                {selected?.label}
+
+                <ChevronDownIcon
+                  className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-2.5 size-4 text-gray-500 dark:fill-white/60"
+                />
+              </ListboxButton>
+
+              {!disabled && (
+                <ListboxOptions
+                  transition
+                  className={clsx(
+                    "absolute left-0 top-full mt-1 min-w-full rounded-xl border border-gray-200 bg-white p-1 shadow-md focus:outline-none z-10",
+                    "dark:border-white/5 dark:bg-gray-800",
+                    "transition duration-100 ease-in data-leave:data-closed:opacity-0"
+                  )}
+                >
+                  {options.map(opt => (
+                    <ListboxOption
+                      key={opt.id}
+                      value={opt}
+                      className={clsx(
+                        "group flex cursor-default items-center gap-2 rounded-lg px-3 py-1.5 select-none",
+                        "data-focus:bg-gray-100 dark:data-focus:bg-white/10"
+                      )}
+                    >
+                      {opt.label}
+                    </ListboxOption>
+                  ))}
+                </ListboxOptions>
+              )}
+            </div>
+          </Listbox>
         </div>
-        {hasChanged && ticketId && (
+
+        {hasChanged && ticketId && !disabled && (
           <div className="inline-flex rounded-lg dark:border-gray-600">
             <button
               onClick={handleSave}
@@ -218,6 +193,7 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
             >
               <CheckIcon className="h-4 w-4" />
             </button>
+
             <button
               onClick={() => {
                 const originalOpt = options.find((opt) => opt.id === priorityId) || options[0];
@@ -239,6 +215,7 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
           </div>
         )}
       </div>
+
       {saveError && (
         <div className="text-sm text-red-600 mt-1">
           {saveError}
@@ -247,5 +224,3 @@ export const PrioritySelector: React.FC<PrioritySelectorProps> = ({
     </div>
   );
 };
-
-export default PrioritySelectorUI;

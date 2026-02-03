@@ -10,5 +10,7 @@ export { default as ToastContainer, useToast } from "./ToastContainer";
 export { default as UserLayout } from "./UserLayout";
 export { default as UserMenu } from "./UserMenu";
 export { default as AdminTicketList } from "./AdminTicketList";
+export { default as AssignTicketSelector } from "./AssignTicketSelector";
+export { default as AssignedTo } from "./AssignedTo";
 
 export type { SidebarLink } from "./Sidebar";
