@@ -67,15 +67,14 @@ export const StatusSelector: React.FC<StatusSelectorProps> = ({
         <div className="relative w-35">
           <ListboxButton
             className={clsx(
-              "relative block w-full ps-4 py-1.5 rounded-lg bg-white text-gray-900 outline outline-gray-300 text-left whitespace-nowrap",
+              "relative block w-full ps-4 py-1.5 rounded-lg bg-white text-gray-900 text-left whitespace-nowrap",
               "dark:bg-gray-800 dark:text-white dark:outline-gray-700",
               loading && "opacity-50 cursor-not-allowed"
             )}
           >
             <StatusBadge text={selected.name} color={selected.color} />
-
             <ChevronDownIcon
-              className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-2.5 size-4 text-gray-500 dark:fill-white/60"
+              className="pointer-events-none ps-1 absolute top-1/2 -translate-y-1/2 right-2.5 size-4 text-gray-500 dark:fill-white/60"
             />
           </ListboxButton>
 

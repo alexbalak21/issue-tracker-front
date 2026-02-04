@@ -9,7 +9,7 @@ interface BadgeProps {
 export default function StatusBadge({ text, color = "gray" }: BadgeProps) {
   return (
     <span
-      className={`inline-flex items-center px-3 py-1 rounded text-sm font-medium border ${colorClasses[color]}`}
+      className={`inline-flex items-center justify-center text-center px-3 py-1 w-25 rounded text-sm font-medium border ${colorClasses[color]}`}
     >
       {text}
     </span>
