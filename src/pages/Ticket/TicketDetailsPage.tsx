@@ -59,6 +59,10 @@ const TicketDetailsPage: React.FC = () => {
       });
   };
 
+  const handleMessageAdded = (newMessage: MessageData) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
   useEffect(() => {
     let isMounted = true;
     setLoading(true);
@@ -257,7 +261,7 @@ const TicketDetailsPage: React.FC = () => {
       </div>
 
       <div className="mt-6">
-        <AddMessage ticketId={id!} onMessageAdded={fetchTicketData} />
+        <AddMessage ticketId={id!} onMessageAdded={handleMessageAdded} />
       </div>
     </div>
   );

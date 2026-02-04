@@ -4,7 +4,7 @@ import Button from './Button';
 
 interface AddMessageProps {
   ticketId: string;
-  onMessageAdded: () => void;
+  onMessageAdded: (newMessage: any) => void;
 }
 
 const AddMessage: React.FC<AddMessageProps> = ({ ticketId, onMessageAdded }) => {
@@ -37,8 +37,9 @@ const AddMessage: React.FC<AddMessageProps> = ({ ticketId, onMessageAdded }) => 
         throw new Error('Failed to post message');
       }
 
+      const newMessage = await response.json();
       setMessage('');
-      onMessageAdded();
+      onMessageAdded(newMessage);
     } catch (err: any) {
       setError(err.message || 'Error posting message');
     } finally {
