@@ -61,22 +61,22 @@ export default function TicketList({ tickets, showAdminColumns = false }: Ticket
               </th>
             )}
 
-            {/* Show Assigned To for support/admin/manager */}
-            {showAdminColumns && (
-              <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
-                Assigned To
-              </th>
-            )}
 
             <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
               Priority
             </th>
 
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
               Status
             </th>
 
-            <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+            
+            {/* Show Assigned To */}
+            <th className="px-4 py-2 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+              Assigned To
+            </th>
+
+            <th className="px-4 py-2 text-end text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
               Created
             </th>
 
@@ -115,16 +115,7 @@ export default function TicketList({ tickets, showAdminColumns = false }: Ticket
                 </td>
               )}
 
-              {/* Assigned To Column */}
-              {showAdminColumns && (
-                <td className="py-2 whitespace-nowrap text-center">
-                  {ticket.assignedTo ? (
-                    <UserBadge userId={ticket.assignedTo} />
-                  ) : (
-                    <UserBadge userId={null} />
-                  )}
-                </td>
-              )}
+
               {/* Priority Column */}
               <td className="px-4 py-2 text-center whitespace-nowrap">
                 <span className="inline-flex items-center gap-2">
@@ -137,12 +128,21 @@ export default function TicketList({ tickets, showAdminColumns = false }: Ticket
               </td>
 
               {/* Status Column */}
-              <td className="px-4 py-2 whitespace-nowrap">
+              <td className="px-4 py-2 whitespace-nowrap text-center">
                 <StatusBadge text={getStatusName(ticket.statusId)} color={getStatusColor(ticket.statusId)} />
               </td>
 
+              {/* Assigned To Column */}
+              <td className="py-2 whitespace-nowrap text-center">
+                {ticket.assignedTo ? (
+                  <UserBadge userId={ticket.assignedTo} />
+                ) : (
+                  <UserBadge userId={null} />
+                )}
+              </td>
+
               {/* Created At Column */}
-              <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+              <td className="px-4 py-2 whitespace-nowrap text-end text-sm text-gray-500 dark:text-gray-400">
                 {new Date(ticket.createdAt).toLocaleDateString('en-GB', {
                   day: '2-digit',
                   month: '2-digit',

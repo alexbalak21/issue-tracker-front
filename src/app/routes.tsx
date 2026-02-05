@@ -8,8 +8,9 @@ import Register from "../pages/Register";
 import Profile from "../pages/User/Profile";
 import UpdateProfile from "../pages/User/UpdateProfile";
 import UpdateUserPassword from "../pages/User/UpdateUserPassword";
+import UserDashboard from "../pages/User/userDashboard";
 import { UserLayout } from "../components";
-import { UserIcon, PencilSquareIcon, KeyIcon } from "@heroicons/react/24/outline";
+import { UserIcon, PencilSquareIcon, KeyIcon, HomeIcon } from "@heroicons/react/24/outline";
 
 import CreateTicketPage from "../pages/Ticket/CreateTicketPage";
 import TicketListPage from "../pages/Ticket/TicketListPage";
@@ -17,6 +18,7 @@ import TicketDetailsPage from "../pages/Ticket/TicketDetailsPage";
 import SupportDashboard from "../pages/Support/SupportDashboard";
 
 const userLinks = [
+  { name: "Dashboard", href: "/user/dashboard", icon: HomeIcon },
   { name: "Profile", href: "/profile", icon: UserIcon },
   { name: "Edit Profile", href: "/update-profile", icon: PencilSquareIcon },
   { name: "Update Password", href: "/update-password", icon: KeyIcon },
@@ -37,6 +39,10 @@ export function AppRoutes() {
       <Route path="/support/dashboard" element={<SupportDashboard />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+
+      {/* User-related pages with sidebar */}
+      {/* User dashboard without sidebar */}
+      <Route path="/user/dashboard" element={<UserDashboard />} />
 
       {/* User-related pages with sidebar */}
       <Route element={<UserLayout links={userLinks} position="left" />}>
