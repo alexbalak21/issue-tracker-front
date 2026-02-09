@@ -25,7 +25,7 @@ export default function ManagerStatsCards({ tickets, users }: { tickets: Ticket[
   return (
     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
       {stats.map(stat => (
-        <div key={stat.label} className={`rounded-lg p-4 text-center shadow bg-white dark:bg-gray-900 ${stat.color} text-white`}>
+        <div key={stat.label} className={`rounded-lg p-4 text-center shadow dark:bg-gray-900 ${stat.color} text-white`}>
           <div className="text-2xl font-bold">{stat.value}</div>
           <div className="text-sm mt-1">{stat.label}</div>
         </div>
