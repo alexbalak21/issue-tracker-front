@@ -111,7 +111,7 @@ export default function TicketList({ tickets, showAdminColumns = false }: Ticket
               {/* Created By Column */}
               {showAdminColumns && (
                 <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-700 dark:text-gray-300">
-                  User #{ticket.createdBy}
+                   <UserBadge userId={ticket.createdBy} />
                 </td>
               )}
 

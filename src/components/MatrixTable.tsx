@@ -16,7 +16,7 @@ export function MatrixTable<Row, Col>({
   getColumnLabel
 }: MatrixTableProps<Row, Col>) {
   return (
-    <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow w-full">
+    <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow w-full h-full ">
       <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200">
         {title}
       </h2>
