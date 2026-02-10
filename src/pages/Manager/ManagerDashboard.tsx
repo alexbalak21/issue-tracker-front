@@ -3,7 +3,8 @@ import { useTickets } from "@features/ticket/useTickets";
 import { useUsers } from "@features/user/useUsers";
 import TicketsStatusBars from "@components/TicketsStatusBars";
 import DonutChart from "@components/DonutChart";
-import PriorityHeatmap from "@components/PriorityHeatmap";
+// import PriorityHeatmap from "@components/PriorityHeatmap";
+import { ManagerPriorityMatrix } from "@components/ManagerPriorityMatrix";
 import TeamRecentActivity from "@components/TeamRecentActivity";
 import AssignTicketModal from "@components/AssignTicketModal";
 import TicketList from "@components/TicketList";
@@ -79,7 +80,7 @@ export default function ManagerDashboard() {
 					<DonutChart title="Assignment Workload" slices={slices} />
 					<DonutChart title="Tickets by Priority" slices={prioritySlices} />
 				</div>
-				<PriorityHeatmap tickets={tickets} users={users} />
+				<ManagerPriorityMatrix tickets={tickets} users={users} priorities={priorities} />
 				<TeamRecentActivity tickets={tickets} users={users} />
 				<div className="mt-8">
 					<TicketList tickets={tickets} showAdminColumns={true} />
@@ -92,4 +93,9 @@ export default function ManagerDashboard() {
 				/>
 			</div>
 		);
+
+// Wrapper component to use MatrixTable for ticket counts by user and priority
+// The following duplicate function definition is removed
 }
+
+
