@@ -1,7 +1,7 @@
 import { useRole } from "@features/auth/useRole";
 import { useTickets } from "@features/ticket/useTickets";
 import { useUsers } from "@features/user/useUsers";
-import ManagerStatsCards from "@components/ManagerStatsCards";
+import TicketsStatusBars from "@components/TicketsStatusBars";
 import TeamWorkloadChart from "@components/TeamWorkloadChart";
 import PriorityHeatmap from "@components/PriorityHeatmap";
 import TeamRecentActivity from "@components/TeamRecentActivity";
@@ -33,7 +33,7 @@ export default function ManagerDashboard() {
 		return (
 			<div className="mx-auto max-w-7xl px-4 py-8 space-y-8">
 				<h1 className="text-3xl font-bold mb-4">Manager Dashboard</h1>
-				<ManagerStatsCards tickets={tickets} />
+				   <TicketsStatusBars tickets={tickets} />
 				<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 					<TeamWorkloadChart tickets={tickets} users={users} />
 					<PriorityHeatmap tickets={tickets} users={users} />
