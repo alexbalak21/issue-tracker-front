@@ -35,20 +35,21 @@ export default function TicketsStatusBars({ tickets, maxY }: TicketsStatusBarsPr
   }));
   const max = maxY || Math.max(...statusCounts.map(s => s.count), 1);
 
-  // Tailwind h-36 = 144px
-  const containerHeight = 144;
+  // Tallest bar is 100% height, others scale proportionally
   return (
-    <div className="flex items-end gap-4 h-45 w-full">
+    <div className="flex items-end gap-4 h-50 bg-white p-4 rounded shadow">
       {statusCounts.map(status => {
-        // Calculate height in px, min 8px for visibility
-        const barHeight = max > 0 ? Math.max((status.count / max) * containerHeight, 8) : 8;
+        // Calculate height in percent, min 8px for visibility
+        const heightPercent = max > 0 ? (status.count / max) * 100 : 0;
         return (
-          <div key={status.id} className="flex flex-col items-center w-10">
-            <div
-              className={`w-full rounded-t ${STATUS_COLOR_MAP[status.color]}`}
-              style={{ height: `${barHeight}px`, transition: 'height 0.3s' }}
-              title={`${status.name}: ${status.count}`}
-            ></div>
+          <div key={status.id} className="flex flex-col items-center w-10" style={{height: '100%'}}>
+            <div className="relative w-full flex-1 flex items-end">
+              <div
+                className={`w-full rounded-t ${STATUS_COLOR_MAP[status.color]}`}
+                style={{ height: `${heightPercent}%`, minHeight: status.count > 0 ? 8 : 2, transition: 'height 0.3s' }}
+                title={`${status.name}: ${status.count}`}
+              ></div>
+            </div>
             <span className="mt-2 text-xs text-center whitespace-nowrap">{status.name}</span>
             <span className="text-xs text-gray-500">{status.count}</span>
           </div>
