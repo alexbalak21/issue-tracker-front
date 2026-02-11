@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Input, Avatar } from "../../components";
+import { Button, Avatar } from "../../components";
 import { EditableText } from "../../components";
 import { useUser, USER_ENDPOINTS } from "../../features/user";
 import { useAuth } from "../../features/auth";
@@ -9,123 +9,17 @@ import UpdateUserPassword from "./UpdateUserPassword";
 
 export default function UpdateProfile() {
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  const handleSaveName = async (newName: string) => {
-    if (user) {
-      setSubmitting(true);
-      try {
-        const response = await apiClient(USER_ENDPOINTS.userUpdate, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name: newName }),
-        });
-        if (response.ok) {
-          const updated = await response.json();
-          setUser({
-            ...user,
-            ...updated,
-          });
-          setFormData((prev) => ({ ...prev, name: updated.name }));
-          setSuccess(true);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 1000);
-        } else {
-          throw new Error("Failed to update name");
-        }
-      } catch (err: any) {
-        setError(err?.message || "Failed to update name");
-      } finally {
-        setSubmitting(false);
-      }
-    }
-  };
 
-  const handleSaveEmail = async (newEmail: string) => {
-    if (user) {
-      setSubmitting(true);
-      try {
-        const response = await apiClient(USER_ENDPOINTS.userUpdate, {
-          method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: newEmail }),
-        });
-        if (response.ok) {
-          const updated = await response.json();
-          setUser({
-            ...user,
-            ...updated,
-          });
-          setFormData((prev) => ({ ...prev, email: updated.email }));
-          setSuccess(true);
-          setTimeout(() => {
-            setSuccess(false);
-          }, 2000);
-        } else {
-          throw new Error("Failed to update email");
-        }
-      } catch (err: any) {
-        setError(err?.message || "Failed to update email");
-      } finally {
-        setSubmitting(false);
-      }
-    }
-  };
   const navigate = useNavigate();
   const { user, setUser } = useUser();
   const { apiClient } = useAuth();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-  });
   const [error, setError] = useState<string | null>(null);
-  const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
 
   // Initialize form with user data when available
-  useEffect(() => {
-    if (user) {
-      setFormData({ name: user.name, email: user.email });
-    }
-  }, [user]);
+  // Removed setFormData usage as formData state is gone
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setError(null);
-
-    try {
-      const response = await apiClient(USER_ENDPOINTS.me, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to update profile");
-      }
-
-      const updated = await response.json();
-      setUser(updated);
-      setSuccess(true);
-      setTimeout(() => {
-        setSuccess(false);
-      }, 2000);
-    } catch (err: unknown) {
-      console.error("Update failed:", err);
-      const message = err instanceof Error ? err.message : "Failed to update profile";
-      setError(message);
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   const handleImageUpload = async (file: File) => {
     try {
@@ -157,7 +51,7 @@ export default function UpdateProfile() {
   }
 
   return (
-    <div className="min-h-[calc(100vh-65px)] ps-10 pb-30 flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-[calc(100vh-65px)] ps-8 flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <div className="max-w-md bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 min-w-100">
         {/* Upload profile image at the top */}
         <div className="flex justify-center mb-6">
@@ -225,7 +119,6 @@ export default function UpdateProfile() {
             label="Name"
             value={user.name}
             onSave={async (newName: string) => {
-              setSubmitting(true);
               setError(null);
               try {
                 const response = await apiClient(USER_ENDPOINTS.userUpdate, {
@@ -235,7 +128,7 @@ export default function UpdateProfile() {
                 });
                 if (!response.ok) throw new Error("Failed to update name");
                 const updated = await response.json();
-                setUser(updated);
+                setUser({ ...user, ...updated });
                 setSuccess(true);
                 setTimeout(() => {
                   setSuccess(false);
@@ -243,7 +136,7 @@ export default function UpdateProfile() {
               } catch (err: any) {
                 setError(err?.message || "Failed to update name");
               } finally {
-                setSubmitting(false);
+                // setSubmitting removed
               }
             }}
           />
@@ -251,7 +144,6 @@ export default function UpdateProfile() {
             label="Email"
             value={user.email}
             onSave={async (newEmail: string) => {
-              setSubmitting(true);
               setError(null);
               try {
                 const response = await apiClient(USER_ENDPOINTS.userUpdate, {
@@ -261,7 +153,7 @@ export default function UpdateProfile() {
                 });
                 if (!response.ok) throw new Error("Failed to update email");
                 const updated = await response.json();
-                setUser(updated);
+                setUser({ ...user, ...updated });
                 setSuccess(true);
                 setTimeout(() => {
                   setSuccess(false);
@@ -269,7 +161,7 @@ export default function UpdateProfile() {
               } catch (err: any) {
                 setError(err?.message || "Failed to update email");
               } finally {
-                setSubmitting(false);
+                // setSubmitting removed
               }
             }}
           />
