@@ -45,10 +45,10 @@ export function AppRoutes() {
       {/* User dashboard without sidebar */}
       <Route path="/user/dashboard" element={<UserDashboard />} />
 
-      {/* User-related pages with sidebar */}
+      {/* User-related pages with sidebar (except profile) */}
+      <Route path="/profile" element={<Profile />} />
+      <Route path="/update-profile" element={<UpdateProfile />} />
       <Route element={<UserLayout links={userLinks} position="left" />}>
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/update-profile" element={<UpdateProfile />} />
         <Route path="/update-password" element={<UpdateUserPassword />} />
       </Route>
     </Routes>

@@ -94,114 +94,116 @@ export default function UpdateProfile() {
   }
 
   return (
-    <div className="max-w-md bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 min-w-100">
-      {/* Upload profile image at the top */}
-      <div className="flex justify-center mb-6">
-        <div className="relative group">
-          <Avatar
-            name={user.name}
-            imageUrl={user.profileImage}
-            size={96}
-          />
-          <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
-            <span className="text-white text-xs">Change</span>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(e) => {
-                const file = e.target.files?.[0];
-                if (file) handleImageUpload(file);
-              }}
+    <div className="min-h-[calc(100vh-4rem)] pt-16 flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="max-w-md bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-6 min-w-100">
+        {/* Upload profile image at the top */}
+        <div className="flex justify-center mb-6">
+          <div className="relative group">
+            <Avatar
+              name={user.name}
+              imageUrl={user.profileImage}
+              size={96}
             />
-          </label>
-        </div>
-      </div>
-
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900">Update Profile</h2>
-        <p className="mt-2 text-sm text-gray-600">Update your account information</p>
-      </div>
-
-      {error && (
-        <div className="mb-4 text-sm text-red-700 bg-red-100 p-3 rounded">
-          {error}
-        </div>
-      )}
-
-      {success && (
-        <div className="mb-6 p-4 bg-green-50 rounded-md">
-          <div className="flex">
-            <div className="flex-shrink-0">
-              <svg
-                className="h-5 w-5 text-green-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-            <div className="ml-3">
-              <p className="text-sm font-medium text-green-800">
-                Profile updated successfully! Redirecting...
-              </p>
-            </div>
+            <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity">
+              <span className="text-white text-xs">Change</span>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) handleImageUpload(file);
+                }}
+              />
+            </label>
           </div>
         </div>
-      )}
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <Input
-            label="Full Name"
-            id="name"
-            name="name"
-            type="text"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            maxLength={100}
-            placeholder="Enter your full name"
-          />
+        <div className="text-center mb-8">
+          <h2 className="text-2xl font-bold text-gray-900">Update Profile</h2>
+          <p className="mt-2 text-sm text-gray-600">Update your account information</p>
         </div>
 
-        <div>
-          <Input
-            label="Email address"
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            maxLength={100}
-            placeholder="Enter your email address"
-          />
-        </div>
+        {error && (
+          <div className="mb-4 text-sm text-red-700 bg-red-100 p-3 rounded">
+            {error}
+          </div>
+        )}
 
-        <div className="flex items-center justify-between pt-4">
-          <Button
-            type="button"
-            onClick={() => navigate("/profile")}
-            variant="secondary"
-            className="w-full sm:w-auto"
-          >
-            Cancel
-          </Button>
-          <Button
-            type="submit"
-            disabled={submitting}
-            className="w-full sm:w-auto"
-          >
-            {submitting ? "Updating..." : "Update Profile"}
-          </Button>
-        </div>
-      </form>
+        {success && (
+          <div className="mb-6 p-4 bg-green-50 rounded-md">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg
+                  className="h-5 w-5 text-green-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-green-800">
+                  Profile updated successfully! Redirecting...
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <Input
+              label="Full Name"
+              id="name"
+              name="name"
+              type="text"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              maxLength={100}
+              placeholder="Enter your full name"
+            />
+          </div>
+
+          <div>
+            <Input
+              label="Email address"
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              maxLength={100}
+              placeholder="Enter your email address"
+            />
+          </div>
+
+          <div className="flex items-center justify-between pt-4">
+            <Button
+              type="button"
+              onClick={() => navigate("/profile")}
+              variant="secondary"
+              className="w-full sm:w-auto"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              disabled={submitting}
+              className="w-full sm:w-auto"
+            >
+              {submitting ? "Updating..." : "Update Profile"}
+            </Button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
