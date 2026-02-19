@@ -11,6 +11,7 @@ import { usePriorities } from "@features/ticket/usePriorities";
 import { priorityDotColors } from "@features/theme/priorityDotColors";
 import ManagerStatsCards from "@components/ManagerStatsCards";
 import { XCircleIcon } from "@heroicons/react/24/outline";
+import { useStatuses } from "@features/ticket/useStatuses";
 
 
 export default function ManagerDashboard() {
@@ -19,10 +20,12 @@ export default function ManagerDashboard() {
 	const { tickets, loading, error } = useTickets();
 	const { users } = useUsers({ role: 3 });
 	const { priorities } = usePriorities();
+	const { statuses } = useStatuses();
 	const [assignModal, setAssignModal] = useState<{ open: boolean; ticketId: number | null }>({ open: false, ticketId: null });
 	const [search, setSearch] = useState("");
 	// Priority filter state
 	const [priorityFilter, setPriorityFilter] = useState("");
+	const [statusFilter, setStatusFilter] = useState("");
 	// Filter tickets by search and priority
 	const filteredTickets = tickets
 		.filter(ticket => ticket.title.toLowerCase().includes(search.toLowerCase()))
@@ -30,6 +33,11 @@ export default function ManagerDashboard() {
 			if (!priorityFilter) return true;
 			const priorityObj = priorities.find(p => p.name.toLowerCase() === priorityFilter.toLowerCase());
 			return priorityObj ? ticket.priorityId === priorityObj.id : true;
+		})
+		.filter(ticket => {
+			if (!statusFilter) return true;
+			const statusObj = statuses.find(s => s.name.toLowerCase() === statusFilter.toLowerCase());
+			return statusObj ? ticket.statusId === statusObj.id : true;
 		});
 
 	useEffect(() => {
@@ -139,8 +147,33 @@ export default function ManagerDashboard() {
 							))}
 						</select>
 					</div>
+					{/* STATUS SELECTOR */}
+					<div className="flex items-center ml-4">
+						{statusFilter && (
+							<button
+								type="button"
+								className="w-7 ml-1 text-gray-400 hover:text-red-500 focus:outline-none"
+								onClick={() => setStatusFilter("")}
+								title="Clear status filter"
+							>
+								<XCircleIcon className="h-6 w-6 mr-1" />
+							</button>
+						)}
+						<select
+							className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+							value={statusFilter}
+							onChange={e => {
+								setStatusFilter(e.target.value);
+							}}
+						>
+							<option value=""> Status</option>
+							{statuses && statuses.map(s => (
+								<option key={s.id} value={s.name}>{s.name}</option>
+							))}
+						</select>
+					</div>
 				</div>
-				<TicketList tickets={filteredTickets} showAdminColumns={true} priorityFilter={priorityFilter} />
+				<TicketList tickets={filteredTickets} showAdminColumns={true} priorityFilter={priorityFilter} statusFilter={statusFilter} />
 			</div>
 			<AssignTicketModal
 				open={assignModal.open}

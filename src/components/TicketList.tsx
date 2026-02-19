@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import type { Ticket } from "../features/ticket/useTickets";
-import { usePriorities } from "../features/ticket/usePriorities";
-import { useStatuses } from "../features/ticket/useStatuses";
+import type { Ticket } from "@features/ticket/useTickets";
+import { usePriorities } from "@features/ticket/usePriorities";
+import { useStatuses } from "@features/ticket/useStatuses";
 import StatusBadge from "./StatusBadge";
 import UserBadge from "./UserBadge";
-import type { BadgeColor } from "../features/theme/badgeColors";
-import { priorityDotColors } from "../utils/priorityDotColors";
+import type { BadgeColor } from "@features/theme/badgeColors";
+import { priorityDotColors } from "@utils/priorityDotColors";
 
 interface TicketListProps {
   tickets: Ticket[];
