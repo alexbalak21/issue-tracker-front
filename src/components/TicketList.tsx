@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import type { Ticket } from "../features/ticket/useTickets";
@@ -13,6 +12,7 @@ interface TicketListProps {
   tickets: Ticket[];
   showAdminColumns?: boolean;
   statusFilter?: string; // status name to filter by (e.g., "Resolved", "Open")
+  priorityFilter?: string; // priority name to filter by (e.g., "High", "Low")
 }
 
 
@@ -23,7 +23,7 @@ function getPriorityColor(priorityId?: number) {
   return priorityDotColors[priorityId as keyof typeof priorityDotColors];
 }
 
-export default function TicketList({ tickets, showAdminColumns = false, statusFilter: statusFilterProp }: TicketListProps) {
+export default function TicketList({ tickets, showAdminColumns = false, statusFilter: statusFilterProp, priorityFilter: priorityFilterProp }: TicketListProps) {
   const { priorities } = usePriorities();
   const { statuses } = useStatuses();
 
@@ -31,6 +31,8 @@ export default function TicketList({ tickets, showAdminColumns = false, statusFi
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
   // Local state for status filter if not controlled by parent
   const [statusFilter, setStatusFilter] = useState<string>(statusFilterProp || '');
+  // Local state for priority filter if not controlled by parent
+  const [priorityFilter, setPriorityFilter] = useState<string>(priorityFilterProp || '');
 
   const getPriorityName = (priorityId: number) => {
     const priority = priorities.find(p => p.id === priorityId);
@@ -47,12 +49,20 @@ export default function TicketList({ tickets, showAdminColumns = false, statusFi
     return (status?.color as BadgeColor) || 'gray';
   };
 
-  // Filter by status if statusFilter is provided
+  // Filter by status and priority if provided
   let filteredTickets = tickets;
   if (typeof statusFilter === 'string' && statusFilter.length > 0) {
     const statusObj = statuses.find(s => s.name.toLowerCase() === statusFilter.toLowerCase());
     if (statusObj) {
-      filteredTickets = tickets.filter(t => t.statusId === statusObj.id);
+      filteredTickets = filteredTickets.filter(t => t.statusId === statusObj.id);
+    } else {
+      filteredTickets = [];
+    }
+  }
+  if (typeof priorityFilter === 'string' && priorityFilter.length > 0) {
+    const priorityObj = priorities.find(p => p.name.toLowerCase() === priorityFilter.toLowerCase());
+    if (priorityObj) {
+      filteredTickets = filteredTickets.filter(t => t.priorityId === priorityObj.id);
     } else {
       filteredTickets = [];
     }
@@ -76,8 +86,8 @@ export default function TicketList({ tickets, showAdminColumns = false, statusFi
         bValue = b.priorityId;
         break;
       case 'status':
-        aValue = getStatusName(a.statusId);
-        bValue = getStatusName(b.statusId);
+        aValue = a.statusId;
+        bValue = b.statusId;
         break;
       case 'assignedTo':
         aValue = a.assignedTo || 0;
@@ -145,7 +155,9 @@ export default function TicketList({ tickets, showAdminColumns = false, statusFi
               className="px-4 py-2 text-center text-xs font-medium text-gray-500 dark:text-gray-300 uppercase cursor-pointer select-none transition-colors duration-150 hover:bg-gray-200 dark:hover:bg-gray-700"
               onClick={() => handleSort('priority')}
             >
-              Priority{sortIndicator('priority')}
+              <div className="flex flex-col items-center">
+                <span>Priority{sortIndicator('priority')}</span>
+              </div>
             </th>
 
             <th
@@ -154,16 +166,6 @@ export default function TicketList({ tickets, showAdminColumns = false, statusFi
             >
               <div className="flex flex-col items-center">
                 <span>Status{sortIndicator('status')}</span>
-                <select
-                  className="mt-1 block w-28 rounded border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-900 text-xs text-gray-700 dark:text-gray-200 focus:ring-indigo-500 focus:border-indigo-500"
-                  value={statusFilter}
-                  onChange={e => setStatusFilter(e.target.value)}
-                >
-                  <option value="">All</option>
-                  {statuses.map(s => (
-                    <option key={s.id} value={s.name}>{s.name}</option>
-                  ))}
-                </select>
               </div>
             </th>
 

@@ -10,6 +10,8 @@ import { useState, useEffect } from "react";
 import { usePriorities } from "@features/ticket/usePriorities";
 import { priorityDotColors } from "@features/theme/priorityDotColors";
 import ManagerStatsCards from "@components/ManagerStatsCards";
+import { XCircleIcon } from "@heroicons/react/24/outline";
+
 
 export default function ManagerDashboard() {
 	// All hooks must be called unconditionally and in the same order
@@ -19,10 +21,16 @@ export default function ManagerDashboard() {
 	const { priorities } = usePriorities();
 	const [assignModal, setAssignModal] = useState<{ open: boolean; ticketId: number | null }>({ open: false, ticketId: null });
 	const [search, setSearch] = useState("");
-	// Filter tickets by search
-	const filteredTickets = tickets.filter(ticket =>
-		ticket.title.toLowerCase().includes(search.toLowerCase())
-	);
+	// Priority filter state
+	const [priorityFilter, setPriorityFilter] = useState("");
+	// Filter tickets by search and priority
+	const filteredTickets = tickets
+		.filter(ticket => ticket.title.toLowerCase().includes(search.toLowerCase()))
+		.filter(ticket => {
+			if (!priorityFilter) return true;
+			const priorityObj = priorities.find(p => p.name.toLowerCase() === priorityFilter.toLowerCase());
+			return priorityObj ? ticket.priorityId === priorityObj.id : true;
+		});
 
 	useEffect(() => {
 		console.log('ManagerDashboardLegacy mounted');
@@ -53,7 +61,7 @@ export default function ManagerDashboard() {
 		"#64748b", // slate
 	];
 
-	
+
 	const agentSlices = users.map((u, i) => ({
 		label: u.name,
 		value: tickets.filter(t => t.assignedTo === u.id).length,
@@ -75,49 +83,73 @@ export default function ManagerDashboard() {
 		};
 	});
 
-		return (
-			<div className="mx-auto max-w-7xl space-y-8">
-				<h1 className="text-3xl font-bold my-4">Manager Dashboard</h1>
-				<ManagerStatsCards tickets={tickets} />
-				   <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-					   {/* First row */}
-					   <div className="md:col-span-2">
-						   <TicketsStatusBars tickets={tickets} />
-					   </div>
-					   <div className="md:col-span-2">
-						   <DonutChart title="Tickets by Priority" slices={prioritySlices} />
-					   </div>
-					   {/* Second row */}
-					   <div className="md:col-span-2">
-						   <DonutChart title="Assignment Workload" slices={slices} />
-					   </div>
-					   <div className="md:col-span-2">
-						   <ManagerPriorityMatrix tickets={tickets} users={users} priorities={priorities} />
-					   </div>
-				   </div>
-				 <div className="mt-8">
-					 <div className="mb-4 flex justify-start">
-						 <input
-							 type="text"
-							 className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
-							 placeholder="Search by title..."
-							 value={search}
-							 onChange={e => setSearch(e.target.value)}
-						 />
-					 </div>
-					 <TicketList tickets={filteredTickets} showAdminColumns={true} />
-				 </div>
-				<AssignTicketModal
-					open={assignModal.open}
-					ticketId={assignModal.ticketId}
-					onClose={() => setAssignModal({ open: false, ticketId: null })}
-					onAssign={handleAssign}
-				/>
+	return (
+		<div className="mx-auto max-w-7xl space-y-8">
+			<h1 className="text-3xl font-bold my-4">Manager Dashboard</h1>
+			<ManagerStatsCards tickets={tickets} />
+			<div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+				{/* First row */}
+				<div className="md:col-span-2">
+					<TicketsStatusBars tickets={tickets} />
+				</div>
+				<div className="md:col-span-2">
+					<DonutChart title="Tickets by Priority" slices={prioritySlices} />
+				</div>
+				{/* Second row */}
+				<div className="md:col-span-2">
+					<DonutChart title="Assignment Workload" slices={slices} />
+				</div>
+				<div className="md:col-span-2">
+					<ManagerPriorityMatrix tickets={tickets} users={users} priorities={priorities} />
+				</div>
 			</div>
-		);
-
-// Wrapper component to use MatrixTable for ticket counts by user and priority
-// The following duplicate function definition is removed
+			<div className="mt-8">
+				<div className="mb-4 flex justify-start items-center">
+					<input
+						type="text"
+						className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
+						placeholder="Search by title..."
+						value={search}
+						onChange={e => setSearch(e.target.value)}
+					/>
+					<div className="flex items-center ml-4">
+						{priorityFilter && (
+							<button
+								type="button"
+								className="w-7 ml-1 text-gray-400 hover:text-red-500 focus:outline-none"
+								onClick={() => setPriorityFilter("")}
+								title="Clear priority filter"
+							>
+								<XCircleIcon className="h-6 w-6 mr-1" />
+							</button>
+						)}
+						<select
+							className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+							value={priorityFilter}
+							onChange={e => {
+								console.log('Priority dropdown changed:', e.target.value);
+								console.log('Event:', e);
+								e.preventDefault();
+								setPriorityFilter(e.target.value);
+							}}
+						>
+							<option value=""> Priority</option>
+							{priorities.map(p => (
+								<option key={p.id} value={p.name}>{p.name}</option>
+							))}
+						</select>
+					</div>
+				</div>
+				<TicketList tickets={filteredTickets} showAdminColumns={true} priorityFilter={priorityFilter} />
+			</div>
+			<AssignTicketModal
+				open={assignModal.open}
+				ticketId={assignModal.ticketId}
+				onClose={() => setAssignModal({ open: false, ticketId: null })}
+				onAssign={handleAssign}
+			/>
+		</div>
+	);
 }
 
 
