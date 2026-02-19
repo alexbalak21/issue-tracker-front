@@ -26,8 +26,14 @@ export function useTheme() {
 
   // Load saved theme mode on mount
   useEffect(() => {
-    const saved = localStorage.getItem("themeMode") as Theme | null;
-    const initial = saved || "system";
+    let saved = localStorage.getItem("themeMode") as Theme | null;
+    // If no theme is set, default to light for new users
+    if (!saved) {
+      saved = "light";
+      localStorage.setItem("themeMode", "light");
+      console.log('🌙 useTheme: No theme found, defaulting to light');
+    }
+    const initial = saved;
     console.log('🌙 useTheme initialized:')
     console.log('  - Saved in localStorage (themeMode):', saved)
     console.log('  - Using mode:', initial)
