@@ -5,9 +5,9 @@ import { useUsers } from "@features/user/useUsers";
 
 interface Props {
   open: boolean;
-  ticketId: number | null;
   onClose: () => void;
   onAssign: (ticketId: number, agentId: number) => void;
+  ticketId?: number | null;
   currentAssignedUserId?: number | null;
 }
 
@@ -25,10 +25,10 @@ export default function AssignTicketModal({ open, ticketId, onClose, onAssign, c
   const { users } = useUsers({ role: 3 });
   const agents = users;
 
-  if (!open || ticketId === null) return null;
+  if (!open) return null;
 
   const handleAssignClick = () => {
-    if (selectedUserId) {
+    if (selectedUserId && ticketId != null) {
       onAssign(ticketId, selectedUserId);
     }
   };
@@ -36,7 +36,7 @@ export default function AssignTicketModal({ open, ticketId, onClose, onAssign, c
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
       <div className="bg-white dark:bg-gray-900 rounded-lg shadow p-6 w-80">
-        <h2 className="text-lg font-semibold mb-4">Assign Ticket #{ticketId}</h2>
+        <h2 className="text-lg font-semibold mb-4">Assign Ticket</h2>
         <div className="mb-4">
           <select
             className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm text-gray-900 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"

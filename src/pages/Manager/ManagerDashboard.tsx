@@ -3,6 +3,7 @@ import { useTickets } from "@features/ticket/useTickets";
 import { useUsers } from "@features/user/useUsers";
 import TicketsStatusBars from "@components/TicketsStatusBars";
 import DonutChart from "@components/DonutChart";
+import HorizontalBarChart from "@components/HorizontalBarChart";
 import { ManagerPriorityMatrix } from "@components/ManagerPriorityMatrix";
 import AssignTicketModal from "@components/AssignTicketModal";
 import TicketList from "@components/TicketList";
@@ -10,7 +11,7 @@ import { useState, useEffect } from "react";
 import { usePriorities } from "@features/ticket/usePriorities";
 import { priorityDotColors } from "@features/theme/priorityDotColors";
 import ManagerStatsCards from "@components/ManagerStatsCards";
-import { XCircleIcon } from "@heroicons/react/24/outline";
+import TicketFilterBar from "@components/TicketFilterBar";
 import { useStatuses } from "@features/ticket/useStatuses";
 
 
@@ -105,74 +106,23 @@ export default function ManagerDashboard() {
 				</div>
 				{/* Second row */}
 				<div className="md:col-span-2">
-					<DonutChart title="Assignment Workload" slices={slices} />
+					<HorizontalBarChart title="Assignment Workload" bars={slices} />
 				</div>
 				<div className="md:col-span-2">
 					<ManagerPriorityMatrix tickets={tickets} users={users} priorities={priorities} />
 				</div>
 			</div>
 			<div className="mt-8">
-				<div className="mb-4 flex justify-start items-center">
-					<input
-						type="text"
-						className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 w-full max-w-xs focus:outline-none focus:ring-2 focus:ring-indigo-400 dark:bg-gray-800 dark:text-gray-100"
-						placeholder="Search by title..."
-						value={search}
-						onChange={e => setSearch(e.target.value)}
-					/>
-					<div className="flex items-center ml-4">
-						{priorityFilter && (
-							<button
-								type="button"
-								className="w-7 ml-1 text-gray-400 hover:text-red-500 focus:outline-none"
-								onClick={() => setPriorityFilter("")}
-								title="Clear priority filter"
-							>
-								<XCircleIcon className="h-6 w-6 mr-1" />
-							</button>
-						)}
-						<select
-							className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-							value={priorityFilter}
-							onChange={e => {
-								console.log('Priority dropdown changed:', e.target.value);
-								console.log('Event:', e);
-								e.preventDefault();
-								setPriorityFilter(e.target.value);
-							}}
-						>
-							<option value=""> Priority</option>
-							{priorities.map(p => (
-								<option key={p.id} value={p.name}>{p.name}</option>
-							))}
-						</select>
-					</div>
-					{/* STATUS SELECTOR */}
-					<div className="flex items-center ml-4">
-						{statusFilter && (
-							<button
-								type="button"
-								className="w-7 ml-1 text-gray-400 hover:text-red-500 focus:outline-none"
-								onClick={() => setStatusFilter("")}
-								title="Clear status filter"
-							>
-								<XCircleIcon className="h-6 w-6 mr-1" />
-							</button>
-						)}
-						<select
-							className="border border-gray-300 dark:border-gray-700 rounded px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-indigo-400"
-							value={statusFilter}
-							onChange={e => {
-								setStatusFilter(e.target.value);
-							}}
-						>
-							<option value=""> Status</option>
-							{statuses && statuses.map(s => (
-								<option key={s.id} value={s.name}>{s.name}</option>
-							))}
-						</select>
-					</div>
-				</div>
+				<TicketFilterBar
+					search={search}
+					setSearch={setSearch}
+					priorityFilter={priorityFilter}
+					setPriorityFilter={setPriorityFilter}
+					statusFilter={statusFilter}
+					setStatusFilter={setStatusFilter}
+					priorities={priorities}
+					statuses={statuses}
+				/>
 				<TicketList tickets={filteredTickets} showAdminColumns={true} priorityFilter={priorityFilter} statusFilter={statusFilter} />
 			</div>
 			<AssignTicketModal
